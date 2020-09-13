@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Cloth;
 use App\Order;
 use App\Student;
-use App\StudentOrders;
+use App\StudentHaveOrders;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
@@ -50,10 +50,10 @@ class OrderController extends Controller
         }
         if(Auth::guard('student')->check()){
             //return request()->all();
-            $student_order=new StudentOrders();
+            $student_order=new StudentHaveOrders();
             $student_order->stu_id=Auth::guard('student')->user()->student_id;
             $student_order->save();
-            $index=StudentOrders::where('stu_id',Auth::guard('student')->user()->student_id)
+            $index=StudentHaveOrders::where('stu_id',Auth::guard('student')->user()->student_id)
                     ->latest('order_id')->first()->order_id;
             foreach(request()->order_property as $order_property){
                 $order=new Order();
@@ -101,7 +101,7 @@ class OrderController extends Controller
         $order_id=request()->order_id;//得到此訂單在orders中的id
 
         Order::where('order_id', $order_id)->delete();
-        StudentOrders::where('order_id', $order_id)->delete();
+        StudentHaveOrders::where('order_id', $order_id)->delete();
         return redirect()->back()->with('success', '訂單刪除成功');
     }
 }

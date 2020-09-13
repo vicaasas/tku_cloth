@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentOrdersTable extends Migration
+class CreateStudentHaveOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateStudentOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_orders', function (Blueprint $table) {
+        Schema::create('student_have_orders', function (Blueprint $table) {
             $table->increments('order_id');
             $table->integer('stu_id')->comment('使用者 ID');
             $table->foreign('stu_id')->references('student_id')->on('students');
