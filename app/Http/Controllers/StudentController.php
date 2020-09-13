@@ -7,6 +7,7 @@ use Auth;
 use App\Order;
 use App\Cloth;
 use App\StudentHaveOrders;
+use DB;
 class StudentController extends Controller
 {
     public function __construct(){
@@ -17,9 +18,14 @@ class StudentController extends Controller
         return view('index',
         [
             'user'=>Auth::guard('student')->user(),
-            'order_id'=>StudentHaveOrders::where('stu_id',Auth::guard('student')->user()->student_id)->get(),
+            'all_order_id'=>StudentHaveOrders::where('stu_id',Auth::guard('student')->user()->student_id)->get(),
             'student_order'=>Order::where('stu_id',Auth::guard('student')->user()->student_id)->get(),
-            'cloth_config'=>Cloth::where('type',Auth::guard('student')->user()->m_or_b)->get(),
+            'cloth_remainder'=>DB::table('cloths')->leftJoin('orders',function($l_join){
+                                $l_join->on('orders.cloth','=','cloths.id')->orOn('orders.accessory','=','cloths.id');
+                            })->select(DB::raw('cloths.type,cloths.name,cloths.property,(cloths.quantity-count(orders.id)) as remainder'))
+                            ->groupby('cloths.id')
+                            ->where('cloths.type','=',Auth::guard('student')->user()->m_or_b)
+                            ->get(),
         ]);
     }
 }

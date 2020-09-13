@@ -8,6 +8,7 @@
     </style>
     </head>
 <body>
+
 <img src="{{ public_path('pdf/事務組.jpg') }}" style="position:fixed;z-index:-1;width:100%;height:100%">
 <div style="width:100%;font-family:標楷體;padding-top:50px;">
 @foreach($bill_receipt as $bill_receipt)

@@ -3,14 +3,16 @@
         您好，{{ $user->student_name }} 同學
     </div>
     <ul>
+    {{ $user }}
     訂單編號
     <br>
-    {{ $order_id }}
+    {{ $all_order_id }}
     <br>
     學生訂單
     <br>
     {{ $student_order }}
-
+    <br>
+    {{ $cloth_remainder }}
     </ul>
     
     <a href="pdf/Receipt.pdf" target="_blank">列印保證金繳費證明</a>

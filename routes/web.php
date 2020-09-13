@@ -123,9 +123,21 @@ Route::get('asd',function(){
     ]);
 });
 Route::group(['middleware' => ['auth:student']], function () {
-    //助教
+    //學生
     Route::get('student','StudentController@index')
-    ->name('student.page');
+        ->name('student.page');
+
+    Route::post('order','OrderController@save')
+        ->name('order.save');
+
+    Route::post('order_update','OrderController@order_update')
+        ->name('order.order_update');
+
+    Route::post('order_delete','OrderController@order_delete')
+        ->name('order.order_delete');
+
+    Route::post('student_all_order_delete','OrderController@student_all_order_delete')
+        ->name('order.student_all_order_delete');
 
 });
 
@@ -136,8 +148,6 @@ Route::group(['middleware' => ['auth:department']], function () {
     Route::post('department_get_class','DepartmentController@return_class')
     ->name('department.return_class');
 });
-Route::post('order/{degree?}','OrderController@save')
-    ->name('order.save');
 
 Auth::routes([
     'confirm' => false,
