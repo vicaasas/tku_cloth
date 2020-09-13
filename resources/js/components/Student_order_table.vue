@@ -62,10 +62,10 @@
         </span>
         <span v-else-if="rows.column.field === 'edit'" >
           <span v-if="rows.row.vgtSelected==true">
-            <button type="button" class="btn btn-primary" :id="rows.row.student_id"  data-target="#editModal" :disabled="false" @click="open_model">編輯</button>
+            <button type="button" class="btn btn-primary" :id="rows.row.originalIndex"  data-target="#editModal" :disabled="false" @click="open_model">編輯</button>
           </span>
           <span v-else>
-            <button type="button" class="btn btn-primary" :id="rows.row.student_id" data-toggle="modal" data-target="#editModal" :disabled="true">編輯</button>
+            <button type="button" class="btn btn-primary" :id="rows.row.originalIndex" data-toggle="modal" data-target="#editModal" :disabled="true">編輯</button>
           </span>
         </span>
       </template>
@@ -179,16 +179,16 @@ export default {
   methods:{
 
     onSelectAll:function(data_all){
-      //console.log(data_all);
+      console.log(data_all);
       //this.$refs['order-table'].selectAllInternal();
       //console.log(typeof(data_all));
       //console.log(this.select_column_data);
       data_all.selectedRows.forEach(element => {
-        var index=this.select_column_data.findIndex(x => x.student_id == element.student_id);
-        //console.log(element.student_id );
+        var index=this.select_column_data.findIndex(x => x.originalIndex == element.originalIndex);
+        console.log(element);
         if(index==-1){
           console.log('not found');
-          var btn_able=document.getElementById(element.student_id);
+          var btn_able=document.getElementById(element.originalIndex);
           if(btn_able.disabled==true){
             btn_able.disabled=false;
           }
@@ -201,7 +201,7 @@ export default {
     },
     onRowClick: function(data){
       //console.log(data);
-      var btn_able=document.getElementById(data.row.student_id);
+      var btn_able=document.getElementById(data.pageIndex);
       
       if(data.selected==true){
         this.edit_data=data.row;
@@ -310,7 +310,7 @@ export default {
       })
     },
     open_model: function(){
-      //console.log(1);
+      console.log(1);
       //document.getElementById('editModal').style.display="block";
       //$('#editModal').modal("toggle");
       //$('#editModal').modal("show");
@@ -324,7 +324,7 @@ export default {
       var rows = this.rows;
       var vm = this;
       var select_column_data = this.select_column_data;
-      //console.log(order_data);
+      console.log(order_data);
       //this.$refs.addComponent.$refs.vuemodal.show()
       //this.$refs['vuemodal'].hide()
 

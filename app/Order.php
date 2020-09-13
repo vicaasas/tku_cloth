@@ -12,7 +12,7 @@ class Order extends Model
     const STATE_RETURNED = 3;
     protected $primaryKey = 'id';
     protected $fillable = [
-        'file_id', 'stu_id', 'class_id', 'cloth', 'accessory',
+        'order_id', 'stu_id', 'class_id', 'cloth', 'accessory',
     ];
 
     public function cloth()

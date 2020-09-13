@@ -2086,19 +2086,20 @@ __webpack_require__.r(__webpack_exports__);
     onSelectAll: function onSelectAll(data_all) {
       var _this = this;
 
-      //console.log(data_all);
-      //this.$refs['order-table'].selectAllInternal();
+      console.log(data_all); //this.$refs['order-table'].selectAllInternal();
       //console.log(typeof(data_all));
       //console.log(this.select_column_data);
+
       data_all.selectedRows.forEach(function (element) {
         var index = _this.select_column_data.findIndex(function (x) {
-          return x.student_id == element.student_id;
-        }); //console.log(element.student_id );
+          return x.originalIndex == element.originalIndex;
+        });
 
+        console.log(element);
 
         if (index == -1) {
           console.log('not found');
-          var btn_able = document.getElementById(element.student_id);
+          var btn_able = document.getElementById(element.originalIndex);
 
           if (btn_able.disabled == true) {
             btn_able.disabled = false;
@@ -2110,7 +2111,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     onRowClick: function onRowClick(data) {
       //console.log(data);
-      var btn_able = document.getElementById(data.row.student_id);
+      var btn_able = document.getElementById(data.pageIndex);
 
       if (data.selected == true) {
         this.edit_data = data.row;
@@ -2212,10 +2213,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     open_model: function open_model() {
-      //console.log(1);
-      //document.getElementById('editModal').style.display="block";
+      console.log(1); //document.getElementById('editModal').style.display="block";
       //$('#editModal').modal("toggle");
       //$('#editModal').modal("show");
+
       $('#editModal').modal("show").on('hide', function () {
         $('#editModal').modal('hide');
       });
@@ -2224,8 +2225,8 @@ __webpack_require__.r(__webpack_exports__);
       var order_data = submitEvent.target.elements;
       var rows = this.rows;
       var vm = this;
-      var select_column_data = this.select_column_data; //console.log(order_data);
-      //this.$refs.addComponent.$refs.vuemodal.show()
+      var select_column_data = this.select_column_data;
+      console.log(order_data); //this.$refs.addComponent.$refs.vuemodal.show()
       //this.$refs['vuemodal'].hide()
       //document.getElementById('editModal').setAttribute('aria-hidden',false);
 
@@ -53795,7 +53796,7 @@ var render = function() {
                                   staticClass: "btn btn-primary",
                                   attrs: {
                                     type: "button",
-                                    id: rows.row.student_id,
+                                    id: rows.row.originalIndex,
                                     "data-target": "#editModal",
                                     disabled: false
                                   },
@@ -53811,7 +53812,7 @@ var render = function() {
                                   staticClass: "btn btn-primary",
                                   attrs: {
                                     type: "button",
-                                    id: rows.row.student_id,
+                                    id: rows.row.originalIndex,
                                     "data-toggle": "modal",
                                     "data-target": "#editModal",
                                     disabled: true

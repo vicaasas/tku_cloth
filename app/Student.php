@@ -11,7 +11,7 @@ class Student extends Authenticatable
     use Notifiable;
     public $table = "students";
     const ROLE_STUDENT = 'student';
-    protected $appends = ['role'];
+    protected $appends = ['role','m_or_b'];
     protected $primaryKey = 'student_id';
     protected $keyType = 'string';
     public $timestamps = false;
@@ -28,5 +28,16 @@ class Student extends Authenticatable
     public function getRoleAttribute()
     {
         return 'student';
+    }
+    public function getMOrBAttribute()
+    {
+        $degree=preg_split('//', $this->class_id, -1, PREG_SPLIT_NO_EMPTY);
+        if($degree[4]=='B' || $degree[4]=='E'){
+            return '學士';
+        }
+        else{
+            return '碩士';
+        }
+        
     }
 }

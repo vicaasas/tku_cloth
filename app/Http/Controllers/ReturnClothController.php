@@ -26,7 +26,7 @@ class ReturnClothController extends Controller
 
         //return request()->type;
         //$order_type=Cloth::where('type',request()->type);
-        //return 1;
+        return 1;
         //try{
             $cloth_index=Cloth::where('type',request()->type)->where('property', '=', request()->size)->first()->id;
             $accessory_index=Cloth::where('type',request()->type)->where('property', '=', request()->color)->first()->id;

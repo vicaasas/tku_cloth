@@ -16,12 +16,10 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('file_id')->default(NULL)->unique()->comment('文件編號');
-
+            $table->integer('order_id')->comment('文件編號');
+            
             $table->integer('stu_id')->comment('使用者 ID');
             $table->foreign('stu_id')->references('student_id')->on('students');
-            
-            $table->string('class_id')->comment('班級代號');
 
             $table->bigInteger('cloth')->unsigned()->comment('衣物 ID');
             $table->foreign('cloth')->references('id')->on('cloths');
