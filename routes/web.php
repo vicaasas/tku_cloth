@@ -17,19 +17,7 @@ use Illuminate\Support\Facades\Redirect;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// 個人設定
-Route::prefix('profile')->group(function () {
-    Route::get('/', function () {
-        return view('auth.profile');
-    })->name('profile');
 
-    Route::post('password', 'Auth\PasswordChangeController@change')
-        ->name('profile.change.password');
-
-    Route::post('image', 'Auth\ImageChangeController@change')
-        ->name('profile.change.image')
-        ->middleware('can:admin');
-});
 Route::group(['middleware' => ['auth']], function () {
     // 主頁面
     Route::get('/', function () {
@@ -37,8 +25,6 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::get('/index', 'IndexController@index')
         ->name('home');
-
-
 
     // 報表產生
     Route::group(['prefix' => 'report', 'middleware' => ['can:admin'], 'as' => 'report.'], function () {
@@ -91,11 +77,23 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('return', 'ReturnClothController@index')
         ->name('return.cloths.page')
         ->middleware('can:admin');
-    Route::post('return', 'ReturnClothController@post')
-        ->name('return.cloths.post')
+    Route::post('get_student_order', 'ReturnClothController@get_student_order')
+        ->name('cloths.get_student_order')
         ->middleware('can:admin');
 
+    // 個人設定
+    Route::prefix('profile')->group(function () {
+        Route::get('/', function () {
+            return view('auth.profile');
+        })->name('profile');
 
+        Route::post('password', 'Auth\PasswordChangeController@change')
+            ->name('profile.change.password');
+
+        Route::post('image', 'Auth\ImageChangeController@change')
+            ->name('profile.change.image')
+            ->middleware('can:admin');
+    });
 
     Route::group(['prefix' => 'print', 'middleware' => ['can:admin'], 'as' => 'print.'], function () {
         Route::get('bill','BillController@bill')
@@ -107,6 +105,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('class_bill_pdf/{class_name}','PdfController@class_bill_pdf')
         ->name('class_bill_pdf');
     });
+
+    Route::post('order_return','OrderController@order_return')
+        ->name('order.order_return')
+        ->middleware('can:admin');
+        
     Route::resource('time', 'TimeController', ['except' => ['create', 'edit', 'show']]);
 
     Route::resource('cloth', 'ClothController', ['except' => ['create', 'edit', 'show']]);

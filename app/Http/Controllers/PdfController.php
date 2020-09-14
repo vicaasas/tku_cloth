@@ -36,7 +36,7 @@ class PdfController extends Controller
         return $pdf->stream('學士服繳費單.pdf');
     }
     public function not_return(){
-        $not_return_order = DB::table('student_order')->select(DB::raw('*'))->where('state',0)->get();   
+        $not_return_order = DB::table('student_order')->select(DB::raw('*'))->where('return',0)->get();   
         $not_return_pdf=View::make('partial_view.record_order_table',[
             'pdf_name'=>"未歸還名單",
             'return_order_state'=>$not_return_order,
@@ -47,7 +47,7 @@ class PdfController extends Controller
 
     }
     public function is_return(){
-        $is_return_order = DB::table('student_order')->select(DB::raw('*'))->where('state',1)->get();   
+        $is_return_order = DB::table('student_order')->select(DB::raw('*'))->where('return',1)->get();   
         $is_return_pdf=View::make('partial_view.record_order_table',[
             'pdf_name'=>"已歸還名冊",
             'return_order_state'=>$is_return_order,

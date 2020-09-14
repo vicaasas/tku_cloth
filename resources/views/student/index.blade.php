@@ -4,9 +4,7 @@
     </div>
     <ul>
     {{ $user }}
-    訂單編號
-    <br>
-    {{ $all_order_id }}
+
     <br>
     學生訂單
     <br>

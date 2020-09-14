@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use App\Student;
+use App\StudentHaveOrders;
 use App\Order;
 use App\Cloth;
 
@@ -14,12 +16,10 @@ class ReturnClothController extends Controller
         return view('admin.return');
     }
 
-    public function post(){
+    public function get_student_order(){
         return view('admin.return',
         [
-            'this_student_order'=>DB::table('student_order')->select(DB::raw('*'))
-                            ->where('student_id',request()->stu_id)
-                            ->get(),
+            'this_student_order'=>StudentHaveOrders::where('stu_id',request()->stu_id)->with('have_orders')->get(),
         ]);
     }
     public function edit_order(){
@@ -57,7 +57,7 @@ class ReturnClothController extends Controller
         //return gettype($test);
         return 1;
         foreach($select_column_data as $key => $value){
-            Order::where('stu_id', $select_column_data[$key])->update(['state' => 1]);
+            Order::where('stu_id', $select_column_data[$key])->update(['return' => 1]);
         }
         //return DB::table('student_order')->select(DB::raw('*'))->get();
 

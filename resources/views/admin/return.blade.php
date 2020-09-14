@@ -10,7 +10,7 @@
                         物品歸還
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('return.cloths.post') }}">
+                        <form method="POST" action="{{ route('cloths.get_student_order') }}">
                             @csrf
 
                             <div class="form-group row">
@@ -42,26 +42,8 @@
         </div>
         <div>
         @if(isset($this_student_order))
-        <table class="table table-sm table-striped table-hover table-condensed">
-            <thead>
-                <tr>
-                    <th class="text-center align-middle">班級</th>
-                    <th class="text-center align-middle">姓名</th>
-                    <th class="text-center align-middle">{{ $this_student_order->first()->type }}服</th>
-                    <th class="text-center align-middle">{{ $this_student_order->first()->accessory }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th class="text-center align-middle">{{ $this_student_order->first()->class_name }}</th>
-                    <th class="text-center align-middle">{{ $this_student_order->first()->student_name }}</th>
-                    <th class="text-center align-middle">{{ $this_student_order->first()->size }}</th>
-                    <th class="text-center align-middle">{{ $this_student_order->first()->color }}</th>
-                </tr>
-                <button>歸還</button>
-            </tbody>
-        </table>
-            
+
+        {{$this_student_order}}
             
         @endif
         </div>

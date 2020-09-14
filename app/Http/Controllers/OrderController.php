@@ -104,4 +104,16 @@ class OrderController extends Controller
         StudentHaveOrders::where('order_id', $order_id)->delete();
         return redirect()->back()->with('success', '訂單刪除成功');
     }
+
+    public function order_return(){
+        $order_id=request()->order_id;//得到此訂單在orders中的id
+
+        StudentHaveOrders::where('order_id', $order_id)
+        ->update(
+            [
+                'return' => 1,
+            ],
+        );
+        return redirect()->back()->with('success', '訂單歸還成功');
+    }
 }

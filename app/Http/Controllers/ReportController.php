@@ -59,10 +59,11 @@ class ReportController extends Controller
         return view('admin.report.class_order',
         [
             "class_name" => $class_name,
-            "class_order" => Student::leftJoin('student_order',function($l_join){
-                                        $l_join->on('students.student_id','=','student_order.student_id');
-                                    })->select(Student::raw('students.student_id,students.student_name,student_order.size,student_order.color,student_order.state'))
-                                    ->where('students.class_name',$class_name)->get(),
+            "class_order" =>Student::where('class_name',$class_name)->with('orders')->get() ,
+            // Student::leftJoin('student_order',function($l_join){
+            //                             $l_join->on('students.student_id','=','student_order.student_id');
+            //                         })->select(Student::raw('students.student_id,students.student_name,student_order.size,student_order.color,student_order.state'))
+            //                         ->where('students.class_name',$class_name)->get(),
         ]);
         
 
