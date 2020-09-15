@@ -11,43 +11,11 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
+    public function __construct(){
+        $this->middleware('checkorder'); 
+    }
     public function save(){
-        if(Auth::guard('represent')->check()){
-            $user_data=Auth::guard('represent')->user();
-            $order=new Order();
-            $order->stu_id=request()->student_id;
-            //$order->class_id=$user_data->class_id;
-            $order->cloth=Cloth::select(['id'])
-                        ->where('type',$user_data->m_or_b)
-                        ->where('property',request()->size)
-                        ->get()[0]->id;
-            $order->accessory=Cloth::select(['id'])
-                        ->where('type',$user_data->m_or_b)
-                        ->where('property',request()->accessory)
-                        ->get()[0]->id;            
-            //$order->cloth=$order_data[0]->id;
-            //$order->accessory=$order_data[1]->id;
-            $order->save();
-            return redirect()->back()->with('success', '新增訂單成功');
-        }
-        if(Auth::guard('department')->check()){
-            //$user_data=Auth::guard('represent')->user();
-            $order=new Order();
-            $order->stu_id=request()->student_id;
-            //$order->class_id=$user_data->class_id;
-            $order->cloth=Cloth::select(['id'])
-                        ->where('type',request()->degree)
-                        ->where('property',request()->size)
-                        ->get()[0]->id;
-            $order->accessory=Cloth::select(['id'])
-                        ->where('type',request()->degree)
-                        ->where('property',request()->accessory)
-                        ->get()[0]->id;            
-            //$order->cloth=$order_data[0]->id;
-            //$order->accessory=$order_data[1]->id;
-            $order->save();
-            return redirect()->back()->with('success', '新增訂單成功');
-        }
+
         if(Auth::guard('student')->check()){
             //return request()->all();
             $student_order=new StudentHaveOrders();
@@ -57,8 +25,9 @@ class OrderController extends Controller
                     ->latest('order_id')->first()->order_id;
             foreach(request()->order_property as $order_property){
                 $order=new Order();
-
-                $order->stu_id=Auth::guard('student')->user()->student_id;
+                
+                $order->stu_id=$order_property["student_id"];
+                //echo $order->stu_id.'\n';
                 $order->order_id=$index;
     
                 $order->cloth=Cloth::select(['id'])
@@ -72,7 +41,7 @@ class OrderController extends Controller
     
                 $order->save();
             }
-
+            //return;
             return redirect()->back()->with('success', '新增訂單成功');
         }
     }

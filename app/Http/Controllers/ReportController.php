@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Student;
 use App\Order;
 use App\Cloth;
+use App\ViewOrder;
 use Illuminate\Http\Request;
 use DB;
 use View;
@@ -48,7 +49,14 @@ class ReportController extends Controller
 
     }
     public function total(){
-        
+        // return Student::where('class_name','not like','%碩%')
+        // ->where('class_name','not like','%博%')
+        //         ->groupBy('class_name')
+        //         ->with(['class_property_counts' => function($query) {
+        //             // user_id is required here*
+        //             $query->select(['class_name','type', 'cloth', 'size']);
+        //         }])->select('class_name')
+        //         ->get();
         return view('admin.report.total',self::get_degree('學士'));
     }
     public function degree_total(){

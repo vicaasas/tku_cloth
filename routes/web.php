@@ -74,13 +74,15 @@ Route::group(['middleware' => ['auth']], function () {
         ->middleware('can:admin');
 
     // 物品歸還頁面
-    Route::get('return', 'ReturnClothController@index')
-        ->name('return.cloths.page')
-        ->middleware('can:admin');
-    Route::post('get_student_order', 'ReturnClothController@get_student_order')
-        ->name('cloths.get_student_order')
-        ->middleware('can:admin');
+    Route::group(['prefix' => 'return', 'middleware' => ['can:admin']], function () {
 
+        Route::get('/', 'ReturnClothController@index')
+            ->name('return.cloths.page');
+    
+        Route::post('get_student_order', 'ReturnClothController@get_student_order')
+            ->name('cloths.get_student_order');
+        
+    });
     // 個人設定
     Route::prefix('profile')->group(function () {
         Route::get('/', function () {
@@ -125,9 +127,9 @@ Route::get('asd',function(){
         'users' => DB::table('student_order')->select(DB::raw('*'))->get(),
     ]);
 });
-Route::group(['middleware' => ['auth:student']], function () {
+Route::group(['prefix' => 'student','middleware' => ['auth:student']], function () {
     //學生
-    Route::get('student','StudentController@index')
+    Route::get('/','StudentController@index')
         ->name('student.page');
 
     Route::post('order','OrderController@save')

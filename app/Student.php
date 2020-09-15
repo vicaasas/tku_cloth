@@ -25,6 +25,10 @@ class Student extends Authenticatable
     {
         return $this->hasMany('App\Order', 'stu_id', 'student_id');
     }
+    public function class_property_counts()
+    {
+        return $this->hasMany('App\ViewOrder', 'class_name', 'class_name');
+    }
     public function getRoleAttribute()
     {
         return 'student';

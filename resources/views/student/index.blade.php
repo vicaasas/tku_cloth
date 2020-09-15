@@ -4,7 +4,8 @@
     </div>
     <ul>
     {{ $user }}
-
+    <br>
+    {{ $student_class_data }}
     <br>
     學生訂單
     <br>
@@ -20,26 +21,40 @@
         <div class="form-group row">
 
         <div class="col-md-6">
+            <input type="text" name="order_property[0][student_id]" placeholder="學號">
+
             <input type="text" name="order_property[0][size]" placeholder="尺寸">
             <input type="text" name="order_property[0][color]" placeholder="顏色">
         </div>
         <div class="col-md-6">
+        <input type="text" name="order_property[1][student_id]" placeholder="學號">
+
             <input type="text" name="order_property[1][size]" placeholder="尺寸">
             <input type="text" name="order_property[1][color]" placeholder="顏色">
         </div>
         <div class="col-md-6">
+        <input type="text" name="order_property[2][student_id]" placeholder="學號">
+
             <input type="text" name="order_property[2][size]" placeholder="尺寸">
             <input type="text" name="order_property[2][color]" placeholder="顏色">
         </div>
-        {{--
-        @foreach($cloth_config as $cloth_config)
-        <label for="location" class="col-md-4 col-form-label text-md-right">
-            {{ $cloth_config->property }}
-        </label>
-        <div class="col-md-6">
-            <input id="{{ $cloth_config->property }}" type="text" name="size" placeholder="數量">
         </div>
-        @endforeach--}}
+        <div class="form-group row mb-0">
+            <div class="col-md-8 offset-md-4">
+                <button type="submit" class="btn btn-primary">
+                    新增訂單
+                </button>
+            </div>
+        </div>
+    </form>
+    <form action="{{ route('order.student_all_order_delete') }}" method="post">
+        @csrf
+        <div class="form-group row">
+
+        <div class="col-md-6">
+            <input type="text" name="order_id" placeholder="id">
+        </div>
+
         </div>
         <div class="form-group row mb-0">
             <div class="col-md-8 offset-md-4">

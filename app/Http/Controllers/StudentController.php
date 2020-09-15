@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Order;
 use App\Cloth;
+use App\Student;
 use App\StudentHaveOrders;
 use DB;
 class StudentController extends Controller
@@ -15,9 +16,11 @@ class StudentController extends Controller
         $this->middleware('auth:student');
     }
     public function index(){
+        //return csrf_token();
         return view('index',
         [
             'user'=>Auth::guard('student')->user(),
+            'student_class_data'=>Student::where('class_name',Auth::guard('student')->user()->class_name)->get(),
             'student_order'=>StudentHaveOrders::where('stu_id',Auth::guard('student')->user()->student_id)->with('have_orders')->get(),
             'cloth_remainder'=>DB::table('cloths')->leftJoin('orders',function($l_join){
                                 $l_join->on('orders.cloth','=','cloths.id')->orOn('orders.accessory','=','cloths.id');
