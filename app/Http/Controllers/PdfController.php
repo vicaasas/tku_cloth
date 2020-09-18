@@ -8,6 +8,7 @@ use DB;
 use PDF;
 use View;
 use Auth;
+use App\Config;
 use App\Student;
 use App\StudentHaveOrders;
 class PdfController extends Controller
@@ -68,11 +69,34 @@ class PdfController extends Controller
     }
     public function receipt_bail(){
         $is_return_order = DB::table('student_order')->select(DB::raw('*'))->where('has_paid',1)->where('has_get_cloths',1)->get();   
+        $student_data=Auth::guard('student')->user();
+        if($student_data->m_or_b=="碩士"){
+            $student_data->setAttribute('margin', 1000);
+            $student_data->setAttribute('cleanfee', 200);
+            $student_data->setAttribute('clothes', 1200);
+            $student_data->setAttribute('hat', 350);
+            $student_data->setAttribute('scarf', 800);
+            $student_data->setAttribute('hatear', 50);
+        }
+        else{
+            $student_data->setAttribute('margin', 500);
+            $student_data->setAttribute('cleanfee', 100);
+            $student_data->setAttribute('clothes', 300);
+            $student_data->setAttribute('hat', 120);
+            $student_data->setAttribute('scarf', 80);
+            $student_data->setAttribute('hatear', 20);
+        }
+        $return_due_date=Time::where('content','借用時間')->first();
+        $this_year = explode('-', $return_due_date->end_time);
+        $year = $this_year[0] - 1911;
         $is_return_pdf=View::make('partial_view.receipt_bail',[
-            'student_data'=>Auth::guard('student')->user(),
+            'student_data'=>$student_data,
             'year'=>(date("Y") - 1911),
             'month'=>date("m"),
             'day'=>date("d"),
+            'year'=>$year,
+            'return_due_date'=>$return_due_date,
+            'collection_place'=>Config::where('key','歸還地點')->first(),
         ]);   
         $html = (string)$is_return_pdf;
         //return $html;
