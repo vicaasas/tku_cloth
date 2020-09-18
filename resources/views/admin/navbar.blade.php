@@ -5,6 +5,9 @@
     <a class="nav-link" href="{{ route('system.index') }}">系統設定</a>
 </li>
 <li>
+    <a class="nav-link" href="{{ route('get_cloths_view') }}">衣物領取</a>
+</li>
+<li>
     <a class="nav-link" href="{{ route('print.bill') }}">繳費收據登記</a>
 </li>
 <li class="nav-item dropdown">
@@ -18,4 +21,7 @@
         <a class="dropdown-item" href="{{ route('report.not_return') }}" target="_blank">未歸還清單</a>
         <a class="dropdown-item" href="{{ route('report.is_return') }}" target="_blank">已歸還名冊</a>
     </div>
+</li>
+<li>
+    <a class="nav-link" href="{{ route('report.exportCsv') }}">匯出已繳費CSV</a>
 </li>

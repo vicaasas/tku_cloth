@@ -10,7 +10,7 @@
                         物品歸還
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('cloths.get_student_order') }}">
+                        <form method="get" action="{{ route('cloths.get_student_order') }}">
                             @csrf
 
                             <div class="form-group row">
@@ -41,9 +41,9 @@
             </div>
         </div>
         <div>
-        @if(isset($this_student_order))
+        @if(isset($return_table))
 
-        {{$this_student_order}}
+            {!!$return_table!!}
             
         @endif
         </div>

@@ -6,14 +6,15 @@ use Illuminate\Http\Request;
 use App\Cloth;
 use App\Order;
 use App\Student;
+use View;
 use App\StudentHaveOrders;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
-    public function __construct(){
-        $this->middleware('checkorder'); 
-    }
+    // public function __construct(){
+    //     $this->middleware('checkorder'); 
+    // }
     public function save(){
 
         if(Auth::guard('student')->check()){
@@ -21,8 +22,15 @@ class OrderController extends Controller
             $student_order=new StudentHaveOrders();
             $student_order->stu_id=Auth::guard('student')->user()->student_id;
             $student_order->save();
-            $index=StudentHaveOrders::where('stu_id',Auth::guard('student')->user()->student_id)
-                    ->latest('order_id')->first()->order_id;
+            $now_index=StudentHaveOrders::where('stu_id',Auth::guard('student')->user()->student_id)
+                    ->latest('id')->first()->id;
+
+            $year=(date("Y") - 1911);
+            $filled_id = sprintf("%04d", $now_index);
+            $index = $year.$filled_id;
+            StudentHaveOrders::where('id',$now_index)->update([
+                'order_id'=>$index,
+            ]);
             foreach(request()->order_property as $order_property){
                 $order=new Order();
                 
@@ -73,7 +81,39 @@ class OrderController extends Controller
         StudentHaveOrders::where('order_id', $order_id)->delete();
         return redirect()->back()->with('success', '訂單刪除成功');
     }
+    public function get_cloths(){
+        $index=request()->get_id;
+        $student_order=StudentHaveOrders::where('stu_id',$index)->first();
+        if($student_order!=null){
+            $table=View::make('partial_view.student_cloths',[
+                'student_order'=>StudentHaveOrders::where('stu_id',$index)->where('has_paid',1)->with('have_orders')->get(),
+            ]);
+            $student_table=$table->render();
 
+        }
+        else{
+            $table=View::make('partial_view.student_cloths',[
+                'student_order'=>StudentHaveOrders::where('order_id',$index)->where('has_paid',1)->with('have_orders')->get(),
+            ]);
+            $student_table=$table->render();
+
+        }
+        return view('admin.report.get_cloths',
+        [
+            'student_table'=> $student_table,
+        ]);
+
+    }
+    public function is_get_cloths(){
+        $order_id=request()->order_id;//得到此訂單在orders中的id
+
+        StudentHaveOrders::where('order_id', $order_id)
+        ->update(
+            [
+                'has_get_cloths' => 1,
+            ],
+        );
+    }
     public function order_return(){
         $order_id=request()->order_id;//得到此訂單在orders中的id
 

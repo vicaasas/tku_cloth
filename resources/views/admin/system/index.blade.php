@@ -93,7 +93,21 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('system.new_user') }}">
                             @csrf
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right">
+                                    使用者姓名
+                                </label>
 
+                                <div class="col-md-6">
+                                    <input id="name" type="text"
+                                           class="form-control @error('name') is-invalid @enderror"
+                                           name="name" required autocomplete="name">
+
+                                    @error('name')
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label for="username" class="col-md-4 col-form-label text-md-right">
                                     使用者帳號

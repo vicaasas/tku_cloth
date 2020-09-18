@@ -8,6 +8,7 @@ use App\Order;
 use App\Cloth;
 use App\Student;
 use App\StudentHaveOrders;
+use App\ViewOrder;
 use DB;
 class StudentController extends Controller
 {
@@ -20,6 +21,7 @@ class StudentController extends Controller
         return view('index',
         [
             'user'=>Auth::guard('student')->user(),
+            'self_order'=>ViewOrder::where('student_id',Auth::guard('student')->user()->student_id)->get(),
             'student_class_data'=>Student::where('class_name',Auth::guard('student')->user()->class_name)->get(),
             'student_order'=>StudentHaveOrders::where('stu_id',Auth::guard('student')->user()->student_id)->with('have_orders')->get(),
             'cloth_remainder'=>DB::table('cloths')->leftJoin('orders',function($l_join){

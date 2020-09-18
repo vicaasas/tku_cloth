@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class StudentHaveOrders extends Model
 {
     protected $fillable = [
-        'order_id', 'stu_id'
+        'order_id', 'stu_id','return','has_paid'
     ];
 
     public function have_orders()
     {
-        return $this->hasMany('App\Order', 'order_id', 'order_id');
+        return $this->hasMany('App\ViewOrder', 'order_id', 'order_id');
     }
 }

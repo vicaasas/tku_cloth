@@ -40,6 +40,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('is_return', 'PdfController@is_return')
         ->name('is_return');
 
+        Route::get('exportCsv', 'PdfController@exportCsv')
+        ->name('exportCsv');
+
         Route::get('class_order/{class_name}', 'ReportController@class_order')
         ->name('class_order');
 
@@ -79,9 +82,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/', 'ReturnClothController@index')
             ->name('return.cloths.page');
     
-        Route::post('get_student_order', 'ReturnClothController@get_student_order')
+        Route::get('get_student_order', 'ReturnClothController@get_student_order')
             ->name('cloths.get_student_order');
-        
+            
+        Route::post('return_order', 'ReturnClothController@return_order')
+            ->name('return_order');
     });
     // 個人設定
     Route::prefix('profile')->group(function () {
@@ -101,17 +106,31 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('bill','BillController@bill')
         ->name('bill');
 
-        Route::get('class_bill/{class_name}','BillController@class_bill')
-        ->name('class_bill');
+        Route::get('student_bill','BillController@student_bill')
+        ->name('student_bill');
 
-        Route::get('class_bill_pdf/{class_name}','PdfController@class_bill_pdf')
-        ->name('class_bill_pdf');
+        Route::post('get_receipt','BillController@get_receipt')
+        ->name('get_receipt');
     });
 
     Route::post('order_return','OrderController@order_return')
         ->name('order.order_return')
         ->middleware('can:admin');
-        
+    
+    Route::get('/get_cloths_view',function () {
+            return view('admin.report.get_cloths');
+        })->name('get_cloths_view')
+        ->middleware('can:admin');
+
+    Route::get('/get_cloths','OrderController@get_cloths')
+        ->name('get_cloths')
+        ->middleware('can:admin');
+
+    Route::post('/is_get_cloths','OrderController@is_get_cloths')
+        ->name('is_get_cloths')
+        ->middleware('can:admin');
+
+
     Route::resource('time', 'TimeController', ['except' => ['create', 'edit', 'show']]);
 
     Route::resource('cloth', 'ClothController', ['except' => ['create', 'edit', 'show']]);
@@ -122,18 +141,19 @@ Route::group(['middleware' => ['auth:represent']], function () {
     Route::get('represent','RepresentController@index')
     ->name('represent.page');
 });
-Route::get('asd',function(){
-    return view('hello', [
-        'users' => DB::table('student_order')->select(DB::raw('*'))->get(),
-    ]);
-});
+// Route::get('asd',function(){
+//     return view('hello', [
+//         'users' => DB::table('student_order')->select(DB::raw('*'))->get(),
+//     ]);
+// });
 Route::group(['prefix' => 'student','middleware' => ['auth:student']], function () {
     //學生
     Route::get('/','StudentController@index')
         ->name('student.page');
 
     Route::post('order','OrderController@save')
-        ->name('order.save');
+        ->name('order.save')
+        ->middleware('checkorder');
 
     Route::post('order_update','OrderController@order_update')
         ->name('order.order_update');
@@ -144,7 +164,19 @@ Route::group(['prefix' => 'student','middleware' => ['auth:student']], function 
     Route::post('student_all_order_delete','OrderController@student_all_order_delete')
         ->name('order.student_all_order_delete');
 
+    Route::get('receipt_bail', 'PdfController@receipt_bail')
+        ->name('receipt_bail');
+
+    Route::get('student_bill_pdf/{student_id}','PdfController@student_bill_pdf')
+        ->name('student_bill_pdf');
+    Route::get('profile', function () {
+        return view('auth.profile');
+    })->name('profile');
+
+    Route::post('password', 'Auth\PasswordChangeController@change')
+        ->name('profile.change.password');
 });
+
 
 Route::group(['middleware' => ['auth:department']], function () {
     //助教
@@ -152,6 +184,7 @@ Route::group(['middleware' => ['auth:department']], function () {
     ->name('department.page');
     Route::post('department_get_class','DepartmentController@return_class')
     ->name('department.return_class');
+    
 });
 
 Auth::routes([

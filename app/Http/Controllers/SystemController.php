@@ -23,19 +23,20 @@ class SystemController extends Controller
         $this->validateUser($request);
 
         $user = new User();
-        if ($request->has('name')) {
-            // 學生
-            $user->username = $request->stu_id;
-            $user->password = bcrypt(substr($request->stu_id, -6));
-            $user->name = $request->name;
-            $user->department = $request->department;
-            $user->class = $request->class;
-        } else {
+        // if ($request->has('name')) {
+        //     // 學生
+        //     $user->username = $request->stu_id;
+        //     $user->password = bcrypt(substr($request->stu_id, -6));
+        //     $user->name = $request->name;
+        //     $user->department = $request->department;
+        //     $user->class = $request->class;
+        // } else {
             // 管理員
+            $user->name = $request->name;
             $user->username = $request->username;
             $user->password = bcrypt($request->password);
             $user->role = User::ROLE_ADMIN;
-        }
+        //}
         $user->base64Img = '';
         $user->save();
 
@@ -43,26 +44,26 @@ class SystemController extends Controller
         return $this->redirectAfterDone();
     }
 
-    private function s(Request $request)
+    private function validateUser(Request $request)
     {
-        if ($request->has('name')) {
-            // 學生
-            $request->validate([
-                'stu_id' => 'required|numeric',
-                'name' => 'required|string',
-                'department' => [
-                    'required',
-                    Rule::in([User::DEPARTMENT_BACHELOR, User::DEPARTMENT_MASTER, User::DEPARTMENT_DOCTOR]),
-                ],
-                'class' => 'required|string',
-            ]);
-        } else {
+        // if ($request->has('name')) {
+        //     // 學生
+        //     $request->validate([
+        //         'stu_id' => 'required|numeric',
+        //         'name' => 'required|string',
+        //         'department' => [
+        //             'required',
+        //             Rule::in([User::DEPARTMENT_BACHELOR, User::DEPARTMENT_MASTER, User::DEPARTMENT_DOCTOR]),
+        //         ],
+        //         'class' => 'required|string',
+        //     ]);
+        // } else {
             // 管理員
             $request->validate([
                 'username' => 'required|string',
                 'password' => 'required|confirmed|string|min:8',
             ]);
-        }
+        //}
 
     }
     public function importstudent(Request $request){
@@ -94,7 +95,7 @@ class SystemController extends Controller
             $student->class_id = $index['class_id'];
             $student->class_name = $index['class_name'];
             $student->student_name = $index['student_name'];
-            $student->passwd = $index['passwd'];
+            $student->passwd = md5(substr($index['student_id'], 3, 6));
             $student->semester = $index['semester'];
             $student->save();
             $count++;

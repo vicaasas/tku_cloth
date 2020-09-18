@@ -2076,9 +2076,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //Vue.prototype.$http = axios;
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'order_table',
+  name: "order_table",
   props: {
     student_order: {}
   },
@@ -2098,7 +2142,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(element);
 
         if (index == -1) {
-          console.log('not found');
+          console.log("not found");
           var btn_able = document.getElementById(element.originalIndex);
 
           if (btn_able.disabled == true) {
@@ -2111,7 +2155,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     onRowClick: function onRowClick(data) {
       //console.log(data);
-      var btn_able = document.getElementById(data.pageIndex);
+      var btn_able = document.getElementById(data.row.originalIndex);
 
       if (data.selected == true) {
         this.edit_data = data.row;
@@ -2127,13 +2171,13 @@ __webpack_require__.r(__webpack_exports__);
       console.log(params);
       console.log(params.columnFilters.type);
 
-      if (params.columnFilters.type == '學士') {
+      if (params.columnFilters.type == "學士") {
         //console.log(this.columns[5].label);
         this.columns[5].label = "配件顏色(領巾)";
-      } else if (params.columnFilters.type == '碩士') {
+      } else if (params.columnFilters.type == "碩士") {
         //console.log(this.columns[5].label);
         this.columns[5].label = "配件顏色(帽穗、披肩)";
-      } else if (params.columnFilters.type == '博士') {
+      } else if (params.columnFilters.type == "博士") {
         this.columns[5].label = "配件顏色(無)";
       } else {
         this.columns[5].label = "配件顏色(領巾 或 帽穗、披肩)";
@@ -2193,7 +2237,7 @@ __webpack_require__.r(__webpack_exports__);
           rows[index].state = 1;
         });
       })["catch"](function (error) {
-        console.log('失敗');
+        console.log("失敗");
       });
     },
     delete_order: function delete_order() {
@@ -2209,7 +2253,7 @@ __webpack_require__.r(__webpack_exports__);
           rows.splice(index, 1);
         });
       })["catch"](function (error) {
-        console.log('失敗');
+        console.log("失敗");
       });
     },
     open_model: function open_model() {
@@ -2217,8 +2261,8 @@ __webpack_require__.r(__webpack_exports__);
       //$('#editModal').modal("toggle");
       //$('#editModal').modal("show");
 
-      $('#editModal').modal("show").on('hide', function () {
-        $('#editModal').modal('hide');
+      $("#editModal").modal("show").on("hide", function () {
+        $("#editModal").modal("hide");
       });
     },
     edit_order: function edit_order(submitEvent) {
@@ -2243,11 +2287,11 @@ __webpack_require__.r(__webpack_exports__);
         rows[index].color = order_data.color.value;
         select_column_data.forEach(function (element) {
           //console.log(element);
-          vm.$set(rows[element.originalIndex], 'vgtSelected', true);
+          vm.$set(rows[element.originalIndex], "vgtSelected", true);
         });
-        $('#editModal').modal("hide");
+        $("#editModal").modal("hide");
       })["catch"](function (error) {
-        console.log('失敗');
+        console.log("失敗");
       }); //console.log(this.select_column_data);
     }
   },
@@ -2257,67 +2301,86 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       columns: [{
-        label: '班級',
-        field: 'class_name'
+        label: "班級",
+        field: "class_name"
       }, {
-        label: '姓名',
-        field: 'student_name'
+        label: "姓名",
+        field: "student_name"
       }, {
-        label: '學號',
-        field: 'student_id',
-        type: 'number'
+        label: "學號",
+        field: "student_id",
+        type: "number"
       }, {
-        label: '學位',
-        field: 'type',
+        label: "學位",
+        field: "type",
         filterOptions: {
           enabled: true,
           // enable filter for this column
-          placeholder: '選擇學位',
+          placeholder: "選擇學位",
           // placeholder for filter input
-          filterDropdownItems: ['學士', '碩士', '博士'],
+          filterDropdownItems: ["學士", "碩士", "博士"],
           // dropdown (with selected values) instead of text input
-          trigger: 'enter' //only trigger on enter not on keyup 
+          trigger: "enter" //only trigger on enter not on keyup
 
         }
       }, {
-        label: '衣服尺寸',
-        field: 'size',
+        label: "衣服尺寸",
+        field: "size",
         filterOptions: {
           enabled: true,
           // enable filter for this column
-          placeholder: '選擇尺寸',
+          placeholder: "選擇尺寸",
           // placeholder for filter input
-          filterDropdownItems: ['S', 'M', 'L', 'XL'],
+          filterDropdownItems: ["S", "M", "L", "XL"],
           // dropdown (with selected values) instead of text input
-          trigger: 'enter' //only trigger on enter not on keyup 
+          trigger: "enter" //only trigger on enter not on keyup
 
         }
       }, {
-        label: '配件顏色(領巾 或 帽穗、披肩)',
-        field: 'color',
-        width: '150px'
+        label: "配件顏色(領巾 或 帽穗、披肩)",
+        field: "color",
+        width: "150px"
       }, {
-        label: '訂單狀態',
-        field: 'state',
-        type: 'number',
+        label: "衣物歸還",
+        field: "return",
+        type: "number",
         filterOptions: {
           enabled: true,
           // enable filter for this column
-          placeholder: '選擇訂單狀態',
+          placeholder: "選擇訂單狀態",
           // placeholder for filter input
           filterDropdownItems: [{
             value: 0,
-            text: '未繳費未歸還保證金'
+            text: "尚未歸還"
           }, {
             value: 1,
-            text: '衣物歸還'
+            text: "已歸還"
           }],
-          trigger: 'enter' //only trigger on enter not on keyup 
+          trigger: "enter" //only trigger on enter not on keyup
 
         }
       }, {
-        label: '編輯',
-        field: 'edit'
+        label: "繳費",
+        field: "has_paid",
+        type: "number",
+        filterOptions: {
+          enabled: true,
+          // enable filter for this column
+          placeholder: "選擇繳費狀態",
+          // placeholder for filter input
+          filterDropdownItems: [{
+            value: 0,
+            text: "尚未繳費"
+          }, {
+            value: 1,
+            text: "已繳費"
+          }],
+          trigger: "enter" //only trigger on enter not on keyup
+
+        }
+      }, {
+        label: "編輯",
+        field: "edit"
       }],
       rows: this.student_order,
       select_column_data: [],
@@ -53731,59 +53794,39 @@ var render = function() {
               fn: function(rows) {
                 return [
                   rows.column.field === "class_name"
-                    ? _c("span", [
-                        _vm._v(
-                          "\n          " +
-                            _vm._s(rows.row.class_name) +
-                            "\n      "
-                        )
-                      ])
+                    ? _c("span", [_vm._v(_vm._s(rows.row.class_name))])
                     : rows.column.field === "student_name"
-                    ? _c("span", [
-                        _vm._v(
-                          "\n          " +
-                            _vm._s(rows.row.student_name) +
-                            "\n      "
-                        )
-                      ])
+                    ? _c("span", [_vm._v(_vm._s(rows.row.student_name))])
                     : rows.column.field === "student_id"
-                    ? _c("span", [
-                        _vm._v(
-                          "\n          " +
-                            _vm._s(rows.row.student_id) +
-                            "\n      "
-                        )
-                      ])
+                    ? _c("span", [_vm._v(_vm._s(rows.row.student_id))])
                     : rows.column.field === "type"
                     ? _c("span", [
                         _vm._v(
-                          "\n          " + _vm._s(rows.row.type) + "\n      "
+                          "\n        " + _vm._s(rows.row.type) + "\n      "
                         )
                       ])
                     : rows.column.field === "size"
-                    ? _c("span", [
-                        _vm._v(
-                          "\n          " + _vm._s(rows.row.size) + "\n      "
-                        )
-                      ])
+                    ? _c("span", [_vm._v(_vm._s(rows.row.size))])
                     : rows.column.field === "color"
+                    ? _c("span", [_vm._v(_vm._s(rows.row.color))])
+                    : rows.column.field === "return"
                     ? _c("span", [
-                        _vm._v(
-                          "\n          " + _vm._s(rows.row.color) + "\n      "
-                        )
-                      ])
-                    : rows.column.field === "state"
-                    ? _c("span", [
-                        rows.row.state == 0
-                          ? _c("span", [
-                              _vm._v("\n          未繳費未歸還保證金\n        ")
-                            ])
+                        rows.row.return == 0
+                          ? _c("span", [_vm._v("尚未歸還")])
                           : _vm._e(),
                         _vm._v(" "),
-                        rows.row.state == 1
-                          ? _c("span", [
-                              _vm._v("\n          衣物歸還\n        ")
-                            ])
+                        rows.row.return == 1
+                          ? _c("span", [_vm._v("已歸還")])
+                          : _vm._e()
+                      ])
+                    : rows.column.field === "has_paid"
+                    ? _c("span", [
+                        rows.row.has_paid == 0
+                          ? _c("span", [_vm._v("尚未繳費")])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        rows.row.has_paid == 1
+                          ? _c("span", [_vm._v("已繳費")])
                           : _vm._e()
                       ])
                     : rows.column.field === "edit"
@@ -54028,7 +54071,7 @@ var render = function() {
                     "data-target": "#returnModal"
                   }
                 },
-                [_vm._v("\n      歸還\n    ")]
+                [_vm._v("歸還")]
               ),
               _vm._v(" "),
               _c(
@@ -54081,7 +54124,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "modal-body" }, [
-                          _vm._v("\n            您確定歸還衣服\n          ")
+                          _vm._v("您確定歸還衣服")
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "modal-footer" }, [
@@ -54123,7 +54166,7 @@ var render = function() {
                     "data-target": "#deleteModal"
                   }
                 },
-                [_vm._v("\n      刪除\n    ")]
+                [_vm._v("刪除")]
               ),
               _vm._v(" "),
               _c(
@@ -54176,7 +54219,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "modal-body" }, [
-                          _vm._v("\n            您確定要刪除訂單\n          ")
+                          _vm._v("您確定要刪除訂單")
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "modal-footer" }, [

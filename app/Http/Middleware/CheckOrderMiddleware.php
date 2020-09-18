@@ -21,24 +21,31 @@ class CheckOrderMiddleware
 
         foreach($request->order_property as $order_property){
             //echo $order_property[student_id;
-            $student=Order::where('stu_id',$order_property["student_id"])->first();
-            if ($student != null) {
-                return redirect()->back()->with('warning', $order_property["student_id"].'學生已訂購');
-            }
-            try{
-                $cloth_id=Cloth::select(['id'])
+            if($order_property["student_id"]!=null&&$order_property['size']!=null&&$order_property['color']!=null){
+                $student=Order::where('stu_id',$order_property["student_id"])->first();
+                if ($student != null) {
+                    return redirect()->back()->with('warning', $order_property["student_id"].'學生已訂購');
+                }
+    
+                try{
+                    $cloth_id=Cloth::select(['id'])
+                                    ->where('type',Auth::guard('student')->user()->m_or_b)
+                                    ->where('property',$order_property['size'])
+                                    ->get()[0]->id;
+                                
+                    $accessory_id=Cloth::select(['id'])
                                 ->where('type',Auth::guard('student')->user()->m_or_b)
-                                ->where('property',$order_property['size'])
-                                ->get()[0]->id;
-                            
-                $accessory_id=Cloth::select(['id'])
-                            ->where('type',Auth::guard('student')->user()->m_or_b)
-                            ->where('property',$order_property['color'])
-                            ->get()[0]->id;  
+                                ->where('property',$order_property['color'])
+                                ->get()[0]->id;  
+                }
+                catch(Exception $ex){
+                    return redirect()->back()->with('warning', '無法輸入不存在的樣式');
+                }
             }
-            catch(Exception $ex){
-                return redirect()->back()->with('warning', '無法輸入不存在的樣式');
+            else{
+                return redirect()->back()->with('warning', '欄位不能是空的');
             }
+            
         }
         return $next($request);
     }

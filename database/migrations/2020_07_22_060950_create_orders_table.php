@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_id')->comment('文件編號');
+            $table->string('order_id')->comment('訂單編號');
             
             $table->integer('stu_id')->comment('使用者 ID');
             $table->foreign('stu_id')->references('student_id')->on('students');
@@ -26,8 +26,8 @@ class CreateOrdersTable extends Migration
 
             $table->bigInteger('accessory')->unsigned()->comment('配件 ID');
             $table->foreign('accessory')->references('id')->on('cloths');
-
-            $table->integer('state')->default(Order::STATE_BORROW)->comment('狀態');
+            $table->tinyInteger('return')->default(0)->comment('是否歸還');
+            //$table->integer('state')->default(Order::STATE_BORROW)->comment('狀態');
             $table->timestamps();
         });
     }

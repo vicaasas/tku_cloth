@@ -34,7 +34,7 @@
                             @elsecan('department')
                                 {{ Auth::guard('department')->user()->department_name }} 助教你好
                             @else
-                                {{ Auth::user()->username }}
+                                {{ Auth::user()->name }} 管理者你好
                             @endcan
                             
                             <span class="caret"></span>
@@ -57,6 +57,7 @@
         </div>
     </div>
 </nav>
+
 {{--<a href="http://163.13.178.165/clothes/admin/index">系統設定</a>--}}
 {{--<a href="http://163.13.178.165/clothes/admin/receiptreg">繳費收據登記</a>--}}
 {{--<a href="http://163.13.178.165/clothes/admin/returnclothes">學/碩士服歸還</a>--}}

@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('username')->unique()->comment('帳號');
             $table->string('password')->comment('密碼');
+            $table->string('name')->comment('管理者姓名');
             $table->string('role')->default(User::ROLE_STUDENT)->comment('身份');
             $table->longText('base64Img')->comment('管理員圖片');
             $table->rememberToken();

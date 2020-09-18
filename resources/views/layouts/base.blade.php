@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/app.js') }}"></script>
 </head>
 <body class="d-flex flex-column" style="padding-top: 4rem;">
 @include('layouts.navbar')
@@ -35,7 +36,7 @@
         @endif
     @endforeach
 </div>
-<script src="{{ asset('js/app.js') }}"></script>
+
 
 </body>
 </html>

@@ -50,12 +50,19 @@ class ReportController extends Controller
     }
     public function total(){
         // return Student::where('class_name','not like','%碩%')
-        // ->where('class_name','not like','%博%')
+        //         ->where('class_name','not like','%博%')
         //         ->groupBy('class_name')
         //         ->with(['class_property_counts' => function($query) {
-        //             // user_id is required here*
-        //             $query->select(['class_name','type', 'cloth', 'size']);
-        //         }])->select('class_name')
+        //             $query//->select(['class_name','type']);
+        //             ->rightJoin('cloths as c1',function($r_join){
+        //                 $r_join->on('student_order.type', '=', 'c1.type')
+        //                 ->on('student_order.cloth', '=', 'c1.name')
+        //                 ->on('student_order.size', '=', 'c1.property') 
+        //                 ->orOn('student_order.color', '=' ,'c1.property');
+        //             }) 
+        //             ->select('c1.property','student_order.class_name', DB::raw('count(student_order.student_id) as total'))
+        //             ->where('c1.type','學士')->groupby('c1.property');
+        //         }])->select('class_name','class_id')
         //         ->get();
         return view('admin.report.total',self::get_degree('學士'));
     }
@@ -67,11 +74,10 @@ class ReportController extends Controller
         return view('admin.report.class_order',
         [
             "class_name" => $class_name,
-            "class_order" =>Student::where('class_name',$class_name)->with('orders')->get() ,
-            // Student::leftJoin('student_order',function($l_join){
-            //                             $l_join->on('students.student_id','=','student_order.student_id');
-            //                         })->select(Student::raw('students.student_id,students.student_name,student_order.size,student_order.color,student_order.state'))
-            //                         ->where('students.class_name',$class_name)->get(),
+            "class_order" =>Student::leftJoin('student_order',function($l_join){
+                                        $l_join->on('students.student_id','=','student_order.student_id');
+                                    })->select(Student::raw('students.student_id,students.class_id,students.student_name,student_order.size,student_order.color'))
+                                    ->where('students.class_name',$class_name)->get(),
         ]);
         
 

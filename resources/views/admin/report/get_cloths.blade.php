@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', '繳費收據登記')
+@section('title', '衣物領取')
 @section('content')
 {{-- $class_name --}}
     <div class="container">
@@ -7,10 +7,10 @@
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-header text-center">
-                        繳費收據登記
+                        衣物領取
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('print.student_bill') }}" method="get">
+                        <form action="{{ route('get_cloths') }}" method="get">
                             @csrf
                             <div class="form-group row">
                                 <label id="title_name" for="get_id" class="col-md-4 col-form-label text-md-right">
@@ -42,42 +42,6 @@
             </div>
            
         </div>
-
-        <script>
-
-            function search_student(){
-
-                var get_id=$('form').serializeArray()[1]['value'];
-                console.log(get_id);
-                //window.location = "{{ route('report.total') }}/"+degree.value;
-                
-                $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-                });
-                $.ajax({
-                    type:'post',
-                    url:"{{ route('print.student_bill') }}",
-                    data:{get_id:get_id},
-
-                    success:function(data){
-                        console.log(data.student_table);
-                        $("#show").html(data.student_table);
-                        //$("#cloth_table").html(data.all_cloth_table);
-                    }
-                });
-                
-            }
-        </script>
-        {{--<ul>
-    
-        @foreach($class_name as $class_name)
-        <li>
-            <a href="{{ route('print.class_bill',$class_name->class_name) }}">{{ $class_name->class_name }}</a>
-        </li>
-        @endforeach
-    </ul>--}}
     </div>
 
 @endsection
