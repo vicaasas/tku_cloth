@@ -21,7 +21,7 @@
 
     <a href="{{ route('student_bill_pdf',$user->student_id) }}" target="_blank">列印繳費單</a>
     <a href="{{ route('receipt_bail') }}" target="_blank">列印保證金繳費證明</a>
-    <a href="pdf/Receipt1.pdf" target="_blank">列印洗滌及折舊費繳費證明</a>
+    <a href="{{ route('bill_proof') }}" target="_blank">列印洗滌及折舊費繳費證明</a>
     <form action="{{ route('order.save') }}" method="post">
         @csrf
         <div class="form-group row">

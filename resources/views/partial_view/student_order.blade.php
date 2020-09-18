@@ -19,10 +19,13 @@
           @if($student_order->has_paid==0)
             <th class="text-center align-middle">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inputreceipt_Modal" data-order_id="{{ $student_order['order_id'] }}">繳費收據登記</button>
+                <a href="{{ route('print.student_bill_pdf',['student_id'=>$student_order['stu_id'],'order_id'=>$student_order['order_id']]) }}" target="_blank">列印繳費單</a>
             </th>
           @else
             <th class="text-center align-middle">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inputreceipt_Modal" data-order_id="{{ $student_order['order_id'] }}" disabled>繳費已登記</button>
+                <a href="{{ route('print.student_bill_pdf',['student_id'=>$student_order['stu_id'],'order_id'=>$student_order['order_id']]) }}" target="_blank">列印繳費單</a>
+
             </th>
           @endif
 
@@ -37,10 +40,15 @@
             <th style="text-center align-middle">{{ $have_orders['size'] }}</th>
             <th style="text-center align-middle">{{ $have_orders['color'] }}</th>
             <th style="text-center align-middle">
+            @if($student_order->has_paid==0)
             <button id="edit_order" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-student_id="{{ $have_orders['student_id'] }}" data-order_id="{{ $student_order['order_id'] }}">編輯</button>
 
             <button id="delete_order" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" data-student_id="{{ $have_orders['student_id'] }}" data-order_id="{{ $student_order['order_id'] }}">刪除</button>
+            @else
+            <button id="edit_order" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-student_id="{{ $have_orders['student_id'] }}" data-order_id="{{ $student_order['order_id'] }}" disabled>編輯</button>
 
+            <button id="delete_order" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" data-student_id="{{ $have_orders['student_id'] }}" data-order_id="{{ $student_order['order_id'] }}" disabled>刪除</button>
+            @endif
           </th>
         </tr>
     @endforeach

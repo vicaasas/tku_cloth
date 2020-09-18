@@ -111,6 +111,9 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::post('get_receipt','BillController@get_receipt')
         ->name('get_receipt');
+
+        Route::get('student_bill_pdf/{student_id}/{order_id}','PdfController@student_bill_pdf')
+        ->name('student_bill_pdf');
     });
 
     Route::post('order_return','OrderController@order_return')
@@ -167,8 +170,12 @@ Route::group(['prefix' => 'student','middleware' => ['auth:student']], function 
     Route::get('receipt_bail', 'PdfController@receipt_bail')
         ->name('receipt_bail');
 
-    Route::get('student_bill_pdf/{student_id}','PdfController@student_bill_pdf')
+    Route::get('bill_proof','PdfController@bill_proof')
+        ->name('bill_proof');
+
+    Route::get('student_bill_pdf/{student_id?}/{order_id?}','PdfController@student_bill_pdf')
         ->name('student_bill_pdf');
+    
     Route::get('profile', function () {
         return view('auth.profile');
     })->name('profile');

@@ -8,6 +8,7 @@ use DB;
 use PDF;
 use View;
 use Auth;
+use Gate;
 use App\Config;
 use App\Student;
 use App\StudentHaveOrders;
@@ -16,8 +17,14 @@ class PdfController extends Controller
     public function student_bill_pdf(){
         $time=Time::all();
         $student_id=request()->student_id;
+        $order_id=request()->order_id;
         $student_data=Student::where('student_id',$student_id)->first();
-       
+        if(Gate::allows('admin')){
+            $admin=Auth::user();
+        }
+        else{
+            $admin=null;
+        }
         if($student_data->m_or_b=="碩士"){
             $cloth_pick_time=$time->where('content','領取時間(碩士服)')->first();
         }
@@ -26,10 +33,11 @@ class PdfController extends Controller
         }
         $bill_pdf=View::make('partial_view.bill',[
             'student_data'=>$student_data,
-            'student_order'=>StudentHaveOrders::where('stu_id',$student_id)->with('have_orders')->get(),
+            'student_order'=>StudentHaveOrders::where('stu_id',$student_id)->where('order_id',$order_id)->with('have_orders')->first(),
             'payment_time'=>$time->where('content','繳費期限')->first(),
             'cloth_pick_time'=>$cloth_pick_time,
             'bill_receipt'=>['繳費收據(事務整備組)','繳款人收據'],
+            'admin'=>$admin,
         ]);
 
         // $bill_pdf=View::make('partial_view.bill',[
@@ -90,6 +98,44 @@ class PdfController extends Controller
         $this_year = explode('-', $return_due_date->end_time);
         $year = $this_year[0] - 1911;
         $is_return_pdf=View::make('partial_view.receipt_bail',[
+            'student_data'=>$student_data,
+            'year'=>(date("Y") - 1911),
+            'month'=>date("m"),
+            'day'=>date("d"),
+            'year'=>$year,
+            'return_due_date'=>$return_due_date,
+            'collection_place'=>Config::where('key','歸還地點')->first(),
+        ]);   
+        $html = (string)$is_return_pdf;
+        //return $html;
+        //
+        $pdf = PDF::loadHtml($html)->setPaper('a5', 'landscape');
+        
+        return $pdf->stream('已歸還名冊.pdf');
+    }
+    public function bill_proof(){
+        $is_return_order = DB::table('student_order')->select(DB::raw('*'))->where('has_paid',1)->where('has_get_cloths',1)->get();   
+        $student_data=Auth::guard('student')->user();
+        if($student_data->m_or_b=="碩士"){
+            $student_data->setAttribute('margin', 1000);
+            $student_data->setAttribute('cleanfee', 200);
+            $student_data->setAttribute('clothes', 1200);
+            $student_data->setAttribute('hat', 350);
+            $student_data->setAttribute('scarf', 800);
+            $student_data->setAttribute('hatear', 50);
+        }
+        else{
+            $student_data->setAttribute('margin', 500);
+            $student_data->setAttribute('cleanfee', 100);
+            $student_data->setAttribute('clothes', 300);
+            $student_data->setAttribute('hat', 120);
+            $student_data->setAttribute('scarf', 80);
+            $student_data->setAttribute('hatear', 20);
+        }
+        $return_due_date=Time::where('content','借用時間')->first();
+        $this_year = explode('-', $return_due_date->end_time);
+        $year = $this_year[0] - 1911;
+        $is_return_pdf=View::make('partial_view.receipt_proof',[
             'student_data'=>$student_data,
             'year'=>(date("Y") - 1911),
             'month'=>date("m"),
