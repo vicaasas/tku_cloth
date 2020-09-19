@@ -15,8 +15,13 @@
 @foreach($student_order as $student_order)
     <tr>
         <th class="text-center align-middle">{{ $student_order['order_id'] }}</th>
+        
         <th class="text-center align-middle">
-            <button id="get_this_cloths" type="button" class="btn btn-primary" data-toggle="modal" data-target="#getclothsModal" data-order_id="{{ $student_order['order_id'] }}">領取</button>
+        @if($student_order->has_get_cloths==0)
+          <button id="get_this_cloths" type="button" class="btn btn-primary" data-toggle="modal" data-target="#getclothsModal" data-order_id="{{ $student_order['order_id'] }}">領取</button>
+        @else
+          <button id="get_this_cloths" type="button" class="btn btn-primary" data-toggle="modal" data-target="#getclothsModal" data-order_id="{{ $student_order['order_id'] }}" disabled>領取</button>
+        @endif
         </th>
     </tr>
     @foreach($student_order['have_orders'] as $have_orders)
@@ -91,8 +96,10 @@ $('#get_cloth').click(function() {
 
     success:function(data){
             //alert(data.student_order[0].student_id);
-      $("#get_this_cloths").attr("disabled", true);
-      console.log(data);
+      //$("#get_this_cloths").attr("disabled", true);
+      setTimeout(function(){// wait for 5 secs(2)
+           location.reload(); // then reload the page.(3)
+      }, 100);  
     }
   });
 });

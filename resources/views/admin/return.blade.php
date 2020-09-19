@@ -38,14 +38,14 @@
                         </form>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div>
-        @if(isset($return_table))
+                <div>
+                    @if(isset($return_table))
 
-            {!!$return_table!!}
-            
-        @endif
+                        {!!$return_table!!}
+                        
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 @endsection
