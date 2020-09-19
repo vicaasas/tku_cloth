@@ -19,7 +19,7 @@ class ReturnClothController extends Controller
     {
         
         $table=View::make('partial_view.return_table',[
-            'student_order'=>DB::table('student_order')->where('student_id',$index)->where('has_paid',1)->where('return',0)->get(),
+            'student_order'=>DB::table('student_order')->where('student_id',$index)->where('has_paid',1)->where('has_get_cloths',1)->where('return',0)->get(),
         ]);
         $return_table=$table->render();
         return 

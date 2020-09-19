@@ -17,7 +17,19 @@ use Illuminate\Support\Facades\Redirect;
 | contains the "web" middleware group. Now create something great!
 |
 */
+    // 個人設定
+    Route::prefix('profile')->group(function () {
+        Route::get('/', function () {
+            return view('auth.profile');
+        })->name('profile');
 
+        Route::post('password', 'Auth\PasswordChangeController@change')
+            ->name('profile.change.password');
+
+        Route::post('image', 'Auth\ImageChangeController@change')
+            ->name('profile.change.image')
+            ->middleware('can:admin');
+    });
 Route::group(['middleware' => ['auth']], function () {
     // 主頁面
     Route::get('/', function () {
@@ -87,19 +99,6 @@ Route::group(['middleware' => ['auth']], function () {
             
         Route::post('return_order', 'ReturnClothController@return_order')
             ->name('return_order');
-    });
-    // 個人設定
-    Route::prefix('profile')->group(function () {
-        Route::get('/', function () {
-            return view('auth.profile');
-        })->name('profile');
-
-        Route::post('password', 'Auth\PasswordChangeController@change')
-            ->name('profile.change.password');
-
-        Route::post('image', 'Auth\ImageChangeController@change')
-            ->name('profile.change.image')
-            ->middleware('can:admin');
     });
 
     Route::group(['prefix' => 'print', 'middleware' => ['can:admin'], 'as' => 'print.'], function () {
@@ -176,9 +175,6 @@ Route::group(['prefix' => 'student','middleware' => ['auth:student']], function 
     Route::get('student_bill_pdf/{student_id?}/{order_id?}','PdfController@student_bill_pdf')
         ->name('student_bill_pdf');
     
-    Route::get('profile', function () {
-        return view('auth.profile');
-    })->name('profile');
 
     Route::post('password', 'Auth\PasswordChangeController@change')
         ->name('profile.change.password');

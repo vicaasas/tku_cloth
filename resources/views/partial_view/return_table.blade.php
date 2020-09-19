@@ -61,7 +61,6 @@
   </div>
 </div>
 
-<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 <script>
 
 $(document).on('show.bs.modal','#returnModal', function (event) {
