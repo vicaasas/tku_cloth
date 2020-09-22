@@ -40,9 +40,9 @@
             　　領巾：{{ $student_data->scarf }}元、帽穗：{{ $student_data->hatear }}元
             </div>
             <br>
-            <div style="position:fixed;z-index:3;top:470px;left:980px">淡江大學</div>
-            <img src="{{ asset('image\receipt.jpg') }}" style="width:150px;height:150px;position:fixed;z-index:2;top:440px;left:950px">
-            <div style="position:fixed;z-index:3;top:540px;left:990px">總務處</div>
+            <div style="position:fixed;z-index:3;top:480px;left:980px">淡江大學</div>
+            <img src="{{ asset('image\receipt.jpg') }}" style="width:150px;height:150px;position:fixed;z-index:2;top:450px;left:950px">
+            <div style="position:fixed;z-index:3;top:550px;left:990px">總務處</div>
             <div style="font-size:40px;margin-left:100px;letter-spacing: 10px;">中華民國 {{ $year }} 年 {{ $month }} 月 {{ $day }} 日</div>
             <div style="font-size:40px;position:fixed;margin-top:10px;left:1050px">{{ substr($student_data->class_id,2,2) }}{{ substr($student_data->student_id,0,1) }}</div>
             <br>

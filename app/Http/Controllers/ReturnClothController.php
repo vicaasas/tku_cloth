@@ -89,10 +89,10 @@ class ReturnClothController extends Controller
         //$select_column_data=request()->select_column_data;
         //return gettype($test);
         //return 1;
-        Order::where('order_id',request()->order_id)->where('stu_id', request()->student_id)->delete();
-        if(Order::where('order_id',request()->order_id)->first()==null){
-            StudentHaveOrders::where('order_id',request()->order_id)->delete();
-        }
+        Order::where('order_id',request()->order_id)->where('stu_id', request()->student_id)->update(['has_cancel' => 1]);
+        // if(Order::where('order_id',request()->order_id)->first()==null){
+        //     StudentHaveOrders::where('order_id',request()->order_id)->delete();
+        // }
         // foreach($select_column_data as $key => $value){
             
         // }

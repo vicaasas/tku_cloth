@@ -27,7 +27,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('accessory')->unsigned()->comment('配件 ID');
             $table->foreign('accessory')->references('id')->on('cloths');
             $table->tinyInteger('return')->default(0)->comment('是否歸還');
-            //$table->integer('state')->default(Order::STATE_BORROW)->comment('狀態');
+            $table->tinyInteger('has_cancel')->default(0)->comment('是否取消');
             $table->timestamps();
         });
     }

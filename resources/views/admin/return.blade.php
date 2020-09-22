@@ -10,7 +10,7 @@
                         物品歸還
                     </div>
                     <div class="card-body">
-                        <form method="get" action="{{ route('cloths.get_student_order') }}">
+                        <form method="get" action="{{ route('return.cloths.get_student_order') }}">
                             @csrf
 
                             <div class="form-group row">

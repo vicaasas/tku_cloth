@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Student;
 use App\Time;
 use App\StudentHaveOrders;
+use App\Order;
 use App\Receipt;
 use View;
 use PDF;
@@ -24,7 +25,9 @@ class BillController extends Controller
         $student_order=StudentHaveOrders::where('stu_id',$index)->first();
         if($student_order!=null){
             $table=View::make('partial_view.student_order',[
+                'order_count'=>StudentHaveOrders::where('stu_id',$index)->with('get_counts')->get(),
                 'student_order'=>StudentHaveOrders::where('stu_id',$index)->with('have_orders')->get(),
+
             ]);
             $student_table=$table->render();
             return 
@@ -60,7 +63,7 @@ class BillController extends Controller
         $receipt->order_id = request()->order_id;
         $receipt->payer = request()->student_id;
 
-        $receipt->pay_date = request()->recipient_date;
+        $receipt->receipt_date = request()->recipient_date;
         $receipt->save();
         StudentHaveOrders::where('order_id',request()->order_id)->update([
             'has_paid'=>1,

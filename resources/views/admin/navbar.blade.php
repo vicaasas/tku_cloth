@@ -23,5 +23,5 @@
     </div>
 </li>
 <li>
-    <a class="nav-link" href="{{ route('report.exportCsv') }}">匯出已繳費CSV</a>
+    <a class="nav-link" href="{{ route('report.exportCsv') }}">匯出訂單詳細資訊CSV</a>
 </li>

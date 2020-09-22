@@ -12,16 +12,13 @@
                 <div style="font-size:60px;text-align:center;font-family:標楷體;margin-left:3%;"><strong>淡江大學畢業班級{{ $student_data->m_or_b }}服借用預約訂單</strong></div>
             </div>
             <div>訂購人 : {{ $student_data->student_id }} {{ $student_data->student_name }}</div>
-            <table style="font-size:30px;">
-            @foreach($student_order->have_orders as  $have_orders)
-            <tr>
-        
-                <td>{{ $have_orders->student_id }}</td>
-                <td>{{ $have_orders->student_name }}</td>
 
-            </tr>
+            @foreach($student_order->have_orders as  $have_orders)
+
+                <span style="font-size:26px;">{{ $have_orders->student_id }} {{ $have_orders->student_name }} {{ $have_orders->class_name }}</span>
+            
             @endforeach
-            </table>
+
             <div>
             <table style="font-size:27px;text-align:left;" width="1250">
                 <tr>
@@ -67,17 +64,12 @@
             </div>
             <!-- <img src="http://163.13.178.165/examples.php?barcode={{ $student_data->student_id }}" style="height:70px;width:550px"> -->
             <div>
-                <table style="font-size:30px;">
                     @foreach($student_order->have_orders as  $have_orders)
-                        <tr>
                     
-                            <td>{{ $have_orders->student_id }}</td>
-                            <td>{{ $have_orders->student_name }}</td>
-                            <td>{{ $have_orders->type }}{{ $have_orders->cloth }}{{ $have_orders->size }}</td>
-                            <td>{{ $have_orders->accessory }}{{ $have_orders->color }}色</td>
-                        </tr>
+                            <span style="font-size:30px;margin-right:20px">{{ $have_orders->student_id }}   {{ $have_orders->student_name }} {{ str_pad($have_orders->size, 2, ".", STR_PAD_RIGHT) }}   {{ $have_orders->color }}色</span>
+  
                     @endforeach
-                </table>
+
                 <div>事務組經辦人 : {{ $admin->name }}</div>
                     <table style="font-size:27px;text-align:left;" width="1250">
                         <tr>
@@ -107,10 +99,11 @@
                             </th>
                         </tr>
                     </table>
+                    <div style="text-align:right;">學位服領取聯</div>
                 </div>
             </div>
         </div>
-        <div style="text-align:right;">學位服領取聯</div>
+        
     </div>
 </div>
 </body>

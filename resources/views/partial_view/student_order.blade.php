@@ -11,8 +11,11 @@
     <th class="text-center align-middle"><strong>操作</strong></th>
     </tr>
 </thead>
+
 <tbody>
+
 @foreach($student_order as $student_order)
+  @if(!$student_order['have_orders']->isEmpty())
     <tr>
         <th class="text-center align-middle">{{ $student_order['order_id'] }}</th>
      
@@ -43,15 +46,30 @@
             @if($student_order->has_paid==0)
             <button id="edit_order" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-student_id="{{ $have_orders['student_id'] }}" data-order_id="{{ $student_order['order_id'] }}">編輯</button>
 
-            <button id="delete_order" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" data-student_id="{{ $have_orders['student_id'] }}" data-order_id="{{ $student_order['order_id'] }}">刪除</button>
+            <button id="delete_order" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" data-student_id="{{ $have_orders['student_id'] }}" data-order_id="{{ $student_order['order_id'] }}">取消</button>
             @else
             <button id="edit_order" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-student_id="{{ $have_orders['student_id'] }}" data-order_id="{{ $student_order['order_id'] }}" disabled>編輯</button>
 
-            <button id="delete_order" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" data-student_id="{{ $have_orders['student_id'] }}" data-order_id="{{ $student_order['order_id'] }}" disabled>刪除</button>
+            <button id="delete_order" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" data-student_id="{{ $have_orders['student_id'] }}" data-order_id="{{ $student_order['order_id'] }}" disabled>取消</button>
             @endif
           </th>
         </tr>
     @endforeach
+    <tr>
+    <th style="text-center align-middle"></th>
+    <th style="text-center align-middle"></th>
+    <th style="text-center align-middle"></th>
+    <th style="text-center align-middle"></th>
+    <th style="text-center align-middle"></th>
+    <th style="text-center align-middle"></th>
+    <th style="text-center align-middle"></th>
+    @if($student_order->m_or_b=="學士")
+      <th style="text-center align-middle">共計 : {{ $order_count->where('order_id',$student_order['order_id'])->first()->get_counts[0]->total * 600 }} 元</th>
+    @else
+      <th style="text-center align-middle">共計 : {{ $order_count->where('order_id',$student_order['order_id'])->first()->get_counts[0]->total * 1200 }} 元</th>
+    @endif
+    </tr>
+  @endif
 @endforeach
 </tbody>
 </table>
@@ -104,7 +122,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('report.edit_order') }}" method="post">
+        <form action="{{ route('return.edit_order') }}" method="post">
         @csrf
 
           <div class="form-group">
@@ -201,11 +219,11 @@ $('#delete_bt').click(function() {
   });
   $.ajax({
     type:'POST',
-    url:"{{ route('report.delete_order') }}",
+    url:"{{ route('return.delete_order') }}",
     data:{order_id:order_id,student_id:student_id},
 
     success:function(data){
-
+      //alert();
       setTimeout(function(){// wait for 5 secs(2)
            location.reload(); // then reload the page.(3)
       }, 100);  

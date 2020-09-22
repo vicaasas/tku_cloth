@@ -14,13 +14,12 @@ class CreateReceiptTable extends Migration
     public function up()
     {
         Schema::create('receipts', function (Blueprint $table) {
-            $table->string('receipt_no')->comment('繳費單號')->primary();
-            $table->integer('order_id')->comment('訂單編號');
+            $table->string('receipt_no')->default(null)->comment('繳費單號')->primary();
+            $table->integer('order_id')->default(null)->comment('訂單編號');
 
-            $table->string('payer')->comment('繳費人');
-            $table->string('role')->comment('身分別');
-            
-            $table->dateTime('pay_date')->comment('繳費時間');
+            $table->string('payer')->default(null)->comment('繳費人');
+                        
+            $table->dateTime('receipt_date')->default(null)->comment('收據登記時間');
 
         });
     }

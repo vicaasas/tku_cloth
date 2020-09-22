@@ -153,7 +153,8 @@ class PdfController extends Controller
     }
     public function exportCsv()
     {
-        $fileName = 'tasks.csv';
+        $year=date('Y')-1911;
+        $fileName = $year.'訂單詳細資訊.csv';
         $tasks = DB::table('student_order')->where('has_paid',1)->get();
      
              $headers = array(
@@ -164,7 +165,7 @@ class PdfController extends Controller
                  "Expires"             => "0"
              );
      
-             $columns = array('class_name', 'student_id', 'student_name', 'degree', 'size','color');
+             $columns = array('訂單編號','班級', '學號', '姓名', '學位', '尺寸','顏色','代訂人','收據編號','收據登入時間');
      
              $callback = function() use($tasks, $columns) {
                  $file = fopen('php://output', 'w');
@@ -172,13 +173,17 @@ class PdfController extends Controller
                  fputcsv($file, $columns);
      
                  foreach ($tasks as $task) {
-                     $row['class_name']  = $task->class_name;
-                     $row['student_id']    = $task->student_id;
-                     $row['student_name']    = $task->student_name;
-                     $row['degree']  = $task->type;
-                     $row['size']  = $task->size;
-                     $row['color']  = $task->color;
-                     fputcsv($file, array($row['class_name'], $row['student_id'], $row['student_name'], $row['degree'], $row['size'],$row['color']));
+                     $row['訂單編號']  = $task->order_id;
+                     $row['班級']  = $task->class_name;
+                     $row['學號']    = $task->student_id;
+                     $row['姓名']    = $task->student_name;
+                     $row['學位']  = $task->type;
+                     $row['尺寸']  = $task->size;
+                     $row['顏色']  = $task->color;
+                     $row['代訂人']  = $task->responsible_person;
+                     $row['收據編號']  = $task->receipt_no;
+                     $row['收據登入時間']  = $task->receipt_date;
+                     fputcsv($file, array($row['訂單編號'],$row['班級'], $row['學號'], $row['姓名'], $row['學位'], $row['尺寸'],$row['顏色'],$row['代訂人'],$row['收據編號'],$row['收據登入時間']));
                  }
      
                  fclose($file);

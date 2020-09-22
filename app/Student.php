@@ -5,13 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use App\Order;
 class Student extends Authenticatable
 {
     use Notifiable;
     public $table = "students";
     const ROLE_STUDENT = 'student';
-    protected $appends = ['role','m_or_b'];
+    protected $appends = ['role','m_or_b','has_order'];
     protected $primaryKey = 'student_id';
     protected $keyType = 'string';
     public $timestamps = false;
@@ -41,6 +41,18 @@ class Student extends Authenticatable
         }
         else{
             return '碩士';
+        }
+        
+    }
+    public function getHasOrderAttribute()
+    {
+        $has_order=Order::where('stu_id',$this->student_id)->where('has_cancel',0)->first();
+        
+        if($has_order==null){
+            return 0;
+        }
+        else{
+            return 1;
         }
         
     }

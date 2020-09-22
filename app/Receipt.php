@@ -10,6 +10,6 @@ class Receipt extends Model
     protected $keyType = 'string';
     public $timestamps = false;
     protected $fillable = [
-        'receipt_no','order_id', 'payer','pay_date'
+        'receipt_no','order_id', 'payer','receipt_date'
     ];
 }

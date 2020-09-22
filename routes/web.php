@@ -61,14 +61,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('all_student_order', 'ReportController@all_student_order')
         ->name('all_student_order');
 
-        Route::post('return_cloth', 'ReturnClothController@return_cloth')
-        ->name('return_cloth');
-
-        Route::post('delete_order', 'ReturnClothController@delete_order')
-        ->name('delete_order');
-
-        Route::post('edit_order', 'ReturnClothController@edit_order')
-        ->name('edit_order');
     });
  
     // 系統設定
@@ -89,16 +81,26 @@ Route::group(['middleware' => ['auth']], function () {
         ->middleware('can:admin');
 
     // 物品歸還頁面
-    Route::group(['prefix' => 'return', 'middleware' => ['can:admin']], function () {
+    Route::group(['prefix' => 'return', 'middleware' => ['can:admin'], 'as' => 'return.'], function () {
 
         Route::get('/', 'ReturnClothController@index')
-            ->name('return.cloths.page');
+            ->name('cloths.page');
     
         Route::get('get_student_order', 'ReturnClothController@get_student_order')
             ->name('cloths.get_student_order');
             
         Route::post('return_order', 'ReturnClothController@return_order')
             ->name('return_order');
+
+        Route::post('return_cloth', 'ReturnClothController@return_cloth')
+            ->name('return_cloth');
+
+        Route::post('delete_order', 'ReturnClothController@delete_order')
+            ->name('delete_order');
+
+        Route::post('edit_order', 'ReturnClothController@edit_order')
+            ->name('edit_order');
+
     });
 
     Route::group(['prefix' => 'print', 'middleware' => ['can:admin'], 'as' => 'print.'], function () {
@@ -157,6 +159,10 @@ Route::group(['prefix' => 'student','middleware' => ['auth:student']], function 
         ->name('order.save')
         ->middleware('checkorder');
 
+    Route::post('add_order','OrderController@add_order')
+        ->name('order.add_order')
+        ->middleware('checkorder');
+
     Route::post('order_update','OrderController@order_update')
         ->name('order.order_update');
 
@@ -175,6 +181,8 @@ Route::group(['prefix' => 'student','middleware' => ['auth:student']], function 
     Route::get('student_bill_pdf/{student_id?}/{order_id?}','PdfController@student_bill_pdf')
         ->name('student_bill_pdf');
     
+    Route::post('recover_order', 'OrderController@recover_order')
+        ->name('recover_order');
 
     Route::post('password', 'Auth\PasswordChangeController@change')
         ->name('profile.change.password');

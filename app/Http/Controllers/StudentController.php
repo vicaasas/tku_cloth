@@ -17,18 +17,47 @@ class StudentController extends Controller
         $this->middleware('auth:student');
     }
     public function index(){
-        //return csrf_token();
+        //return substr($student_data->class_id,0,5);
+        
+        $student_data=Auth::guard('student')->user();
+        //return StudentHaveOrders::where('stu_id',$student_data->student_id)->with('have_orders')->first();
+        $order_time=StudentHaveOrders::where('stu_id',$student_data->student_id)->where('has_paid',1)->get();
+        //return (strtotime(date('Y/m/d h:i:s'))-strtotime($order_time->created_at))/86400;
+        foreach($order_time as $order_time){
+            if((strtotime(date('Y/m/d h:i:s'))-strtotime($order_time->created_at))/86400>=3){
+                Order::where('order_id',$order_time->order_id)->update(['has_cancel'=>1]);
+            }
+        }
+        if(StudentHaveOrders::where('stu_id',$student_data->student_id)->first() != null){
+            $agent=StudentHaveOrders::where('stu_id',$student_data->student_id)->with('have_orders')->get();
+        }
+        else{
+            $agent=null;
+        }
+        if(ViewOrder::where('student_id',$student_data->student_id)->where('has_cancel',0)->first()!=null){
+            $my_order_id=ViewOrder::where('student_id',$student_data->student_id)->first()->order_id;
+            $self_order=StudentHaveOrders::where('order_id',$my_order_id)->with('have_orders')->first();
+        }
+        else if(ViewOrder::where('student_id',$student_data->student_id)->where('has_cancel',1)->first()!=null){
+            $my_order_id=ViewOrder::where('student_id',$student_data->student_id)->first()->order_id;
+            $self_order=StudentHaveOrders::where('order_id',$my_order_id)->with('this_cancels')->first();
+        }
+        else{
+            $self_order=null;
+            
+        }
         return view('index',
         [
-            'user'=>Auth::guard('student')->user(),
-            'self_order'=>ViewOrder::where('student_id',Auth::guard('student')->user()->student_id)->get(),
-            'student_class_data'=>Student::where('class_name',Auth::guard('student')->user()->class_name)->get(),
-            'student_order'=>StudentHaveOrders::where('stu_id',Auth::guard('student')->user()->student_id)->with('have_orders')->get(),
+            'user'=>$student_data,
+            'cancel_order'=>StudentHaveOrders::where('stu_id',$student_data->student_id)->with('this_cancels')->get(),
+            'self_order'=>$self_order,
+            'student_class_data'=>Student::where('class_id','like',substr($student_data->class_id,0,5).'%')->get(),
+            'student_order'=>$agent,
             'cloth_remainder'=>DB::table('cloths')->leftJoin('orders',function($l_join){
-                                $l_join->on('orders.cloth','=','cloths.id')->orOn('orders.accessory','=','cloths.id');
+                                $l_join->on('orders.cloth','=','cloths.id')->orOn('orders.accessory','=','cloths.id')->where('orders.has_cancel',0);
                             })->select(DB::raw('cloths.type,cloths.name,cloths.property,(cloths.quantity-count(orders.id)) as remainder'))
                             ->groupby('cloths.id')
-                            ->where('cloths.type','=',Auth::guard('student')->user()->m_or_b)
+                            ->where('cloths.type','=',$student_data->m_or_b)
                             ->get(),
         ]);
     }
