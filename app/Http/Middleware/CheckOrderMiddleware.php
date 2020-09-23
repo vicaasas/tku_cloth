@@ -24,7 +24,7 @@ class CheckOrderMiddleware
         //print_r( $request->order_property);
         //echo array_count_values(array_column($obj, 'size'))['L'];
         $temp_array=array();
-
+        
         foreach($request->order_property as $order_property){
 
             if($order_property["student_id"]!=null&&$order_property['size']!=null&&$order_property['color']!=null){
@@ -66,6 +66,10 @@ class CheckOrderMiddleware
                 return redirect()->back()->with('warning', '欄位不能是空的');
             }
             
+        }
+        //echo count($temp_array);
+        if(count($temp_array)>10){
+            return redirect()->back()->with('warning', '訂單數量不能大於10筆');
         }
         $remind=DB::table('cloths')->leftJoin('orders',function($l_join){
             $l_join->on('orders.cloth','=','cloths.id')->orOn('orders.accessory','=','cloths.id')->where('orders.has_cancel',0);

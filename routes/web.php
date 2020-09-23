@@ -156,8 +156,8 @@ Route::group(['prefix' => 'student','middleware' => ['auth:student']], function 
         ->middleware('checkorder');
 
     Route::post('add_order','OrderController@add_order')
-        ->name('order.add_order');
-
+        ->name('order.add_order')
+        ->middleware('check_single_order');
 
     Route::post('order_update','OrderController@order_update')
         ->name('order.order_update');
