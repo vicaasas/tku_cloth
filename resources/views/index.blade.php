@@ -5,9 +5,5 @@
         @include('admin.index')
     @elsecan('student')
         @include('student.index')
-    @elsecan('represent')
-        @include('represent.index')
-    @elsecan('department')
-        @include('department.index')
     @endcan
 @endsection

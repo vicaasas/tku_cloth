@@ -30,22 +30,17 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         //return Auth::user();
         // 管理員 Gate
-        Gate::define('represent', function ($user) {
-            return $user->role === Represent::ROLE_REPRESENT;
-        });
+
         Gate::define('admin', function ($user) {
             return $user->role === User::ROLE_ADMIN;
         });
 
-        // 畢代 Gate
+        // 學生 Gate
         Gate::define('student', function ($user) {
             return $user->role === Student::ROLE_STUDENT;
         });
 
-        // 系助教 Gate
-        Gate::define('department', function ($user) {
-            return $user->role === Department::ROLE_DEPARTMENT;
-        });
+    }
         
         /*
         if (Gate::allows('admin')) {
@@ -55,5 +50,4 @@ class AuthServiceProvider extends ServiceProvider
         if (Gate::denies('admin')) {
             return '非系統管理者！';
         }*/
-    }
 }

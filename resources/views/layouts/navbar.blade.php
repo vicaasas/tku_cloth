@@ -29,10 +29,6 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             @can('student')
                                 {{ Auth::guard('student')->user()->student_name }} 同學你好
-                            @elsecan('represent')
-                                {{ Auth::guard('represent')->user()->class_name }} 畢代你好
-                            @elsecan('department')
-                                {{ Auth::guard('department')->user()->department_name }} 助教你好
                             @else
                                 {{ Auth::user()->name }} 管理者你好
                             @endcan

@@ -155,12 +155,12 @@ $('#recover_bt').click(function() {
             <input type="text" name="order_property[0][size]" placeholder="尺寸" value="{{ old('order_property[0][size]') }}">
             <input type="text" name="order_property[0][color]" placeholder="顏色" value="{{ old('order_property[0][color]') }}">
         </div>
-        <!-- <div class="col-md-6">
+        <div class="col-md-6">
             <input type="text" name="order_property[1][student_id]" placeholder="學號">
 
             <input type="text" name="order_property[1][size]" placeholder="尺寸">
             <input type="text" name="order_property[1][color]" placeholder="顏色">
-        </div> -->
+        </div>
         <!-- 
         <div class="col-md-6">
             <input type="text" name="order_property[2][student_id]" placeholder="學號">

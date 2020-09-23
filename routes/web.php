@@ -140,11 +140,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('cloth', 'ClothController', ['except' => ['create', 'edit', 'show']]);
 
 });
-Route::group(['middleware' => ['auth:represent']], function () {
-    //助教
-    Route::get('represent','RepresentController@index')
-    ->name('represent.page');
-});
+
 // Route::get('asd',function(){
 //     return view('hello', [
 //         'users' => DB::table('student_order')->select(DB::raw('*'))->get(),
@@ -160,8 +156,8 @@ Route::group(['prefix' => 'student','middleware' => ['auth:student']], function 
         ->middleware('checkorder');
 
     Route::post('add_order','OrderController@add_order')
-        ->name('order.add_order')
-        ->middleware('checkorder');
+        ->name('order.add_order');
+
 
     Route::post('order_update','OrderController@order_update')
         ->name('order.order_update');
@@ -188,15 +184,6 @@ Route::group(['prefix' => 'student','middleware' => ['auth:student']], function 
         ->name('profile.change.password');
 });
 
-
-Route::group(['middleware' => ['auth:department']], function () {
-    //助教
-    Route::get('department/{class_name?}','DepartmentController@index')
-    ->name('department.page');
-    Route::post('department_get_class','DepartmentController@return_class')
-    ->name('department.return_class');
-    
-});
 
 Auth::routes([
     'confirm' => false,

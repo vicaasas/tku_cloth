@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Represent;
-use App\Department;
+
 use App\Student;
 use Illuminate\Validation\ValidationException;
 class LoginController extends Controller
@@ -30,9 +29,7 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        // if(Auth::guard('represent')->check()){
-        //     return redirect()->back(); 
-        // }
+
         return view('auth.login');
     }
     public function login(Request $request)
@@ -59,17 +56,6 @@ class LoginController extends Controller
             return redirect()->route('student.page');
         }
 
-        else if($user = Represent::where('class_id', $request->username)->where('passwd',md5($request->password))->first()){
-            Auth::guard('represent')->login($user);
-            $request->session()->regenerate();
-            return redirect()->route('represent.page');
-        }
-
-        else if($user = Department::where('department_id', $request->username)->where('passwd',md5($request->password))->first()){
-            Auth::guard('department')->login($user);
-            $request->session()->regenerate();
-            return redirect()->route('department.page');
-        }
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
@@ -83,15 +69,11 @@ class LoginController extends Controller
         if(Gate::allows('admin')){
             $this->guard()->logout();
         }
-        if(Gate::allows('department')){
-            Auth::guard('department')->logout();
-        }
+
         if(Gate::allows('student')){
             Auth::guard('student')->logout();
         }
-        else{
-            Auth::guard('represent')->logout();
-        }
+
         
         $request->session()->invalidate();
     
@@ -126,7 +108,6 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('guest:student')->except('logout');
-        $this->middleware('guest:represent')->except('logout');
-        $this->middleware('guest:department')->except('logout');
+
     }
 }

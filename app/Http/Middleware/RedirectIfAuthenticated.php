@@ -23,12 +23,7 @@ class RedirectIfAuthenticated
             if($guard == "student"){
                 return redirect()->route('student.page');
             }
-            else if($guard == "represent"){
-                return redirect()->route('represent.page');
-            }
-            else if($guard == "department"){
-                return redirect()->route('department.page');
-            }
+
             else{
                 return redirect(RouteServiceProvider::HOME);
             }

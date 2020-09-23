@@ -56,24 +56,7 @@ return [
             'provider' => 'students',
             'hash' => false,
         ],
-        'represent'=>[
-            'driver' => 'session',
-			'provider' => 'represents',
-        ],
-        'represent-api' => [
-            'driver' => 'token',
-            'provider' => 'represents',
-            'hash' => false,
-        ],
-        'department'=>[
-            'driver' => 'session',
-			'provider' => 'departments',
-        ],
-        'department-api' => [
-            'driver' => 'token',
-            'provider' => 'departments',
-            'hash' => false,
-        ],
+        
     ],
 
     /*
@@ -103,14 +86,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Student::class,
         ],
-        'represents' => [
-            'driver' => 'eloquent',
-            'model' => App\Represent::class,
-        ],
-        'departments' => [
-            'driver' => 'eloquent',
-            'model' => App\Department::class,
-        ],
+        
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -145,18 +121,7 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-        'represents' => [
-            'provider' => 'represents',
-            'table' => 'password_resets',
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-        'departments' => [
-            'provider' => 'departments',
-            'table' => 'password_resets',
-            'expire' => 60,
-            'throttle' => 60,
-        ],
+        
     ],
 
     /*
