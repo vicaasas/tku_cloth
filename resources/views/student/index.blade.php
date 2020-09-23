@@ -141,6 +141,7 @@ $('#recover_bt').click(function() {
     剩餘衣物
     <br>
     {{ $cloth_remainder }}
+    
 
     <a href="{{ route('student_bill_pdf',$user->student_id) }}" target="_blank">列印繳費單</a>
     <a href="{{ route('receipt_bail') }}" target="_blank">列印保證金繳費證明</a>

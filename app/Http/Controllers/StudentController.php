@@ -28,24 +28,34 @@ class StudentController extends Controller
                 Order::where('order_id',$order_time->order_id)->update(['has_cancel'=>1]);
             }
         }
-        if(StudentHaveOrders::where('stu_id',$student_data->student_id)->first() != null){
-            $agent=StudentHaveOrders::where('stu_id',$student_data->student_id)->with('have_orders')->get();
-        }
-        else{
-            $agent=null;
-        }
-        if(ViewOrder::where('student_id',$student_data->student_id)->where('has_cancel',0)->first()!=null){
-            $my_order_id=ViewOrder::where('student_id',$student_data->student_id)->first()->order_id;
-            $self_order=StudentHaveOrders::where('order_id',$my_order_id)->with('have_orders')->first();
-        }
-        else if(ViewOrder::where('student_id',$student_data->student_id)->where('has_cancel',1)->first()!=null){
-            $my_order_id=ViewOrder::where('student_id',$student_data->student_id)->first()->order_id;
-            $self_order=StudentHaveOrders::where('order_id',$my_order_id)->with('this_cancels')->first();
-        }
-        else{
+        $order_data=StudentHaveOrders::where('stu_id',$student_data->student_id)->with('have_orders')->get();
+        $student_order_data=ViewOrder::where('student_id',$student_data->student_id)->where('has_cancel',0)->first();
+        $student_cancel_order_data=ViewOrder::where('student_id',$student_data->student_id)->where('has_cancel',1)->first();
+        if($order_data->first() != null&&$student_order_data!=null){
+            $agent=$order_data;
             $self_order=null;
-            
         }
+        else{
+            if($order_data->first() != null){
+                $agent=$order_data;
+            }
+            else{
+                $agent=null;
+            }
+            if($student_order_data!=null){
+                $my_order_id=ViewOrder::where('student_id',$student_data->student_id)->first()->order_id;
+                $self_order=StudentHaveOrders::where('order_id',$my_order_id)->with('have_orders')->first();
+            }
+            else if($student_cancel_order_data!=null){
+                $my_order_id=ViewOrder::where('student_id',$student_data->student_id)->first()->order_id;
+                $self_order=StudentHaveOrders::where('order_id',$my_order_id)->with('this_cancels')->first();
+            }
+            else{
+                $self_order=null;
+                
+            }
+        }
+
         return view('index',
         [
             'user'=>$student_data,

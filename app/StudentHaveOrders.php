@@ -14,12 +14,14 @@ class StudentHaveOrders extends Model
     public function have_orders()
     {
 
-        return $this->hasMany('App\ViewOrder', 'order_id', 'order_id')->where('has_cancel',0);
+        return $this->hasMany('App\ViewOrder', 'order_id', 'order_id')->where('has_cancel',0)
+        ->select(['student_id','class_id','class_name','student_name','order_id','type','cloth','size','accessory','color']);
     }
     public function this_cancels()
     {
 
-        return $this->hasMany('App\ViewOrder', 'order_id', 'order_id')->where('has_cancel',1);
+        return $this->hasMany('App\ViewOrder', 'order_id', 'order_id')->where('has_cancel',1)
+        ->select(['student_id','class_id','class_name','student_name','order_id','type','cloth','size','accessory','color']);
     }
     public function get_counts()
     {
