@@ -80,12 +80,9 @@ class CheckOrderMiddleware
         foreach($temp_array as $temp_array => $value){
             if($remind->where('type',Auth::guard('student')->user()->m_or_b)->where('property',$temp_array)->first()->remainder - $value <=0){
                 //return redirect('/')->withInput();
-                return redirect()->back()->with('warning', '衣服尺寸'.$order_property['size'].'已沒有');
+                return redirect()->back()->with('warning', '衣服尺寸'.$temp_array.'已沒有');
             }
-            if($remind->where('type',Auth::guard('student')->user()->m_or_b)->where('property',$temp_array)->first()->remainder - $value <=0){
-                //return redirect('/')->withInput();
-                return redirect()->back()->with('warning', '配件顏色'.$order_property['color'].'已沒有');
-            }
+
         }
         return $next($request);
     }
