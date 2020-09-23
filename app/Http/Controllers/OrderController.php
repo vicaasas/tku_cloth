@@ -66,19 +66,19 @@ class OrderController extends Controller
                         ->where('type',Auth::guard('student')->user()->m_or_b)
                         ->where('property',$order_property['color'])
                         ->get()[0]->id;  
-
+                $cancel_id=$student_order_cancel->order_id;
                 $student_order_cancel=Order::where('stu_id',$order_property['student_id'])->where('has_cancel',1)->first();
                 if($student_order_cancel!=null){
-                    // if(StudentHaveOrders::where('order_id', $student_order_cancel->order_id)->with('have_orders')->first()->have_orders->isEmpty()){
-                    //     StudentHaveOrders::where('order_id', $student_order_cancel->order_id)->delete();
-                    // }
-                    
+       
                     $student_order_cancel->update([
                         'order_id'=>$index,
                         'cloth'=>$cloth_id,
                         'accessory'=>$accessory_id,
                         'has_cancel'=> 0 ,
                     ]);
+                    if(StudentHaveOrders::where('order_id',$cancel_id)->with('have_orders')->first()->have_orders->isEmpty()){
+                        StudentHaveOrders::where('order_id', $cancel_id)->delete();
+                    }
                 }
                 else{
                     $order=new Order();
