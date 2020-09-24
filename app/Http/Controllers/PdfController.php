@@ -72,7 +72,7 @@ class PdfController extends Controller
         ]);   
         $html = (string)$is_return_pdf;
 
-        $pdf = PDF::loadHTML($html);
+        $pdf = PDF::loadHTML($html)->setOption('footer-center', '第 [page] 頁');
         return $pdf->stream('已歸還名冊.pdf');
     }
     public function receipt_bail(){
