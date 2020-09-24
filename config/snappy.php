@@ -37,7 +37,9 @@ return [
         'enabled' => true,
         'binary'  => base_path('vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf'),
         'timeout' => false,
-        'options' => [],
+        'options' => [
+            'footer-center' => 'Page [page] of [toPage]',
+        ],
         'env'     => [],
     ],
     

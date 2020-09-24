@@ -60,7 +60,7 @@ class PdfController extends Controller
             'return_order_state'=>$not_return_order,
         ]);   
         $html = $not_return_pdf->render();
-        $pdf = PDF::loadHTML($html);
+        $pdf = PDF::loadHTML($html)->setOption('footer-center', '第 [page] 頁');
         return $pdf->stream('未歸還名單.pdf');
 
     }
