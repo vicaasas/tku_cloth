@@ -11,7 +11,6 @@
     <th class="text-center align-middle"><strong>操作</strong></th>
     </tr>
 </thead>
-
 <tbody>
 
 @foreach($student_order as $student_order)
@@ -64,9 +63,9 @@
     <th style="text-center align-middle"></th>
     <th style="text-center align-middle"></th>
     @if($student_order->m_or_b=="學士")
-      <th style="text-center align-middle">共計 : {{ $order_count->where('order_id',$student_order['order_id'])->first()->get_counts[0]->total * 600 }} 元</th>
+      <th style="text-center align-middle">共計 : {{ $student_order->get_counts[0]->total * 600 }} 元</th>
     @else
-      <th style="text-center align-middle">共計 : {{ $order_count->where('order_id',$student_order['order_id'])->first()->get_counts[0]->total * 1200 }} 元</th>
+      <th style="text-center align-middle">共計 : {{ $student_order->get_counts[0]->total * 1200 }} 元</th>
     @endif
     </tr>
   @endif

@@ -25,8 +25,7 @@ class BillController extends Controller
         $student_order=StudentHaveOrders::where('stu_id',$index)->first();
         if($student_order!=null){
             $table=View::make('partial_view.student_order',[
-                'order_count'=>StudentHaveOrders::where('stu_id',$index)->with('get_counts')->get(),
-                'student_order'=>StudentHaveOrders::where('stu_id',$index)->with('have_orders')->get(),
+                'student_order'=>StudentHaveOrders::where('stu_id',$index)->with('have_orders')->with('get_counts')->get(),
 
             ]);
             $student_table=$table->render();

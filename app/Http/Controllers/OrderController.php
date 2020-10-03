@@ -110,13 +110,7 @@ class OrderController extends Controller
                 'accessory' => $accessory_index,
             ],
         );
-        return redirect()->back()->with('success', '新增更新成功');
-    }
-    public function order_delete(){
-        $student_order_id=request()->student_order_id;//得到此訂單在orders中的id
-
-        Order::where('id', $student_order_id)->delete();
-        return redirect()->back()->with('success', '項目刪除成功');
+        return redirect()->back()->with('success', '訂單更新成功');
     }
 
     public function add_order(){
@@ -138,7 +132,12 @@ class OrderController extends Controller
         $order->save();
         return redirect()->back()->with('success', '項目新增成功');
     }
-    
+    public function order_delete(){
+        $student_order_id=request()->student_order_id;//得到此訂單在orders中的id
+
+        Order::where('id', $student_order_id)->delete();
+        return redirect()->back()->with('success', '項目刪除成功');
+    }
     public function student_all_order_delete(){
         $order_id=request()->order_id;//得到此訂單在orders中的id
 
