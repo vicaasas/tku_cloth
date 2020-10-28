@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Order;
 use App\User;
 use App\Student;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Schema;
 //use Illuminate\Support\Facades\Auth;
 class SystemController extends Controller
 {
@@ -22,8 +24,8 @@ class SystemController extends Controller
     {
         $this->validateUser($request);
 
-        $user = new User();
-        // if ($request->has('name')) {
+        
+        // if ($request->has('stu_id')) {
         //     // 學生
         //     $user->username = $request->stu_id;
         //     $user->password = bcrypt(substr($request->stu_id, -6));
@@ -32,13 +34,14 @@ class SystemController extends Controller
         //     $user->class = $request->class;
         // } else {
             // 管理員
+            $user = new User();
             $user->name = $request->name;
             $user->username = $request->username;
             $user->password = bcrypt($request->password);
             $user->role = User::ROLE_ADMIN;
+            $user->base64Img = '';
+            $user->save();
         //}
-        $user->base64Img = '';
-        $user->save();
 
         $request->session()->flash('success', '使用者新增成功！');
         return $this->redirectAfterDone();
@@ -87,9 +90,9 @@ class SystemController extends Controller
         $count=0;
         foreach($rows as $index){
             
-            if($count==25){
-                break;
-            }
+            // if($count==25){
+            //     break;
+            // }
             $student = new Student();
             $student->student_id = $index['student_id'];
             $student->class_id = $index['class_id'];
@@ -112,15 +115,18 @@ class SystemController extends Controller
 
     public function dropStudents(Request $request)
     {
-        $orders = Order::all();
-        foreach ($orders as $order) {
-            $order->delete();
-        }
+        //Schema::dropIfExists('orders');
+        DB::table('students')->delete();
+        //Student::truncate();
+        // $orders = Order::all();
+        // foreach ($orders as $order) {
+        //     $order->delete();
+        // }
 
-        $students = User::all()->where('role', User::ROLE_STUDENT);
-        foreach ($students as $student) {
-            $student->delete();
-        }
+        // $students = User::all()->where('role', User::ROLE_STUDENT);
+        // foreach ($students as $student) {
+        //     $student->delete();
+        // }
 
         $request->session()->flash('success', '資料清除完畢！');
         return $this->redirectAfterDone();

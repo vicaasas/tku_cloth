@@ -11,6 +11,7 @@
     <th class="text-center align-middle">歸還</th>
     </tr>
 </thead>
+
 <tbody>
 @foreach($student_order as $student_order)
 
@@ -87,7 +88,7 @@ $('#return').click(function() {
   });
   $.ajax({
     type:'POST',
-    url:"{{ route('return_order') }}",
+    url:"{{ route('return.self_cloth') }}",
     data:{order_id:order_id,student_id:student_id},
 
     success:function(data){

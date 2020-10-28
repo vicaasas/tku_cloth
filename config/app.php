@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -176,6 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         //pdf
         Barryvdh\Snappy\ServiceProvider::class,
+        
+        Spatie\Backup\BackupServiceProvider::class,
     ],
 
     /*

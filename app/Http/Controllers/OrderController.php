@@ -43,7 +43,7 @@ class OrderController extends Controller
     public function save(){
 
         if(Auth::guard('student')->check()){
-            //return request()->all();
+            //return gettype(request()->all());
             $student_order=new StudentHaveOrders();
             $student_order->stu_id=Auth::guard('student')->user()->student_id;
             $student_order->save();
@@ -66,10 +66,11 @@ class OrderController extends Controller
                         ->where('type',Auth::guard('student')->user()->m_or_b)
                         ->where('property',$order_property['color'])
                         ->get()[0]->id;  
-                $cancel_id=$student_order_cancel->order_id;
+                
                 $student_order_cancel=Order::where('stu_id',$order_property['student_id'])->where('has_cancel',1)->first();
+                
                 if($student_order_cancel!=null){
-       
+                    $cancel_id=$student_order_cancel->order_id;
                     $student_order_cancel->update([
                         'order_id'=>$index,
                         'cloth'=>$cloth_id,
@@ -189,4 +190,5 @@ class OrderController extends Controller
         );
         return redirect()->back()->with('success', '訂單歸還成功');
     }
+
 }

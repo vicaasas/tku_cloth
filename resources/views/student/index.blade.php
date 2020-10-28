@@ -141,28 +141,32 @@ $('#recover_bt').click(function() {
     剩餘衣物
     <br>
     {{ $cloth_remainder }}
-    
+    {{ json_encode(old()) }}
 
     <a href="{{ route('student_bill_pdf',$user->student_id) }}" target="_blank">列印繳費單</a>
     <a href="{{ route('receipt_bail') }}" target="_blank">列印保證金繳費證明</a>
     <a href="{{ route('bill_proof') }}" target="_blank">列印洗滌及折舊費繳費證明</a>
+
     <form action="{{ route('order.save') }}" method="post">
         @csrf
         <div class="form-group row">
-
         <div class="col-md-6">
-            <input type="text" name="order_property[0][student_id]" placeholder="學號" value="{{ old('order_property[0][student_id]') }}">
+            <input type="text" name="order_property[0][student_id]" placeholder="學號" value={{ old('old_order.0.student_id') }}>
+            <input type="text" name="order_property[0][size]" placeholder="尺寸" value={{ old('old_order.0.size') }}>
+            <input type="text" name="order_property[0][color]" placeholder="顏色" value={{ old('old_order.0.color') }}>
 
-            <input type="text" name="order_property[0][size]" placeholder="尺寸" value="{{ old('order_property[0][size]') }}">
-            <input type="text" name="order_property[0][color]" placeholder="顏色" value="{{ old('order_property[0][color]') }}">
         </div>
+                
         <div class="col-md-6">
             <input type="text" name="order_property[1][student_id]" placeholder="學號">
 
             <input type="text" name="order_property[1][size]" placeholder="尺寸">
             <input type="text" name="order_property[1][color]" placeholder="顏色">
         </div>
-        <!-- 
+<!-- 
+
+
+        
         <div class="col-md-6">
             <input type="text" name="order_property[2][student_id]" placeholder="學號">
 

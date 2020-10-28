@@ -89,8 +89,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('get_student_order', 'ReturnClothController@get_student_order')
             ->name('cloths.get_student_order');
             
-        Route::post('return_order', 'ReturnClothController@return_order')
-            ->name('return_order');
+        Route::post('return_order_self', 'ReturnClothController@self_cloth')
+            ->name('self_cloth');
 
         Route::post('return_cloth', 'ReturnClothController@return_cloth')
             ->name('return_cloth');

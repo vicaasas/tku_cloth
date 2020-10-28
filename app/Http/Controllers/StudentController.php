@@ -31,11 +31,11 @@ class StudentController extends Controller
         $order_data=StudentHaveOrders::where('stu_id',$student_data->student_id)->with('have_orders')->get();
         $student_order_data=ViewOrder::where('student_id',$student_data->student_id)->where('has_cancel',0)->first();
         $student_cancel_order_data=ViewOrder::where('student_id',$student_data->student_id)->where('has_cancel',1)->first();
-        if($order_data->first() != null&&$student_order_data!=null){
-            $agent=$order_data;
-            $self_order=null;
-        }
-        else{
+        // if($order_data->first() != null&&$student_order_data!=null){
+        //     $agent=$order_data;
+        //     $self_order=null;
+        // }
+        // else{
             if($order_data->first() != null){
                 $agent=$order_data;
             }
@@ -54,7 +54,7 @@ class StudentController extends Controller
                 $self_order=null;
                 
             }
-        }
+        //}
 
         return view('index',
         [

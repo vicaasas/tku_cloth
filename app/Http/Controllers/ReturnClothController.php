@@ -32,7 +32,7 @@ class ReturnClothController extends Controller
         
         return view('admin.return',self::return_table(request()->stu_id));
     }
-    public function return_order(){
+    public function self_cloth(){
         
         $order_id=request()->order_id;
         $student_id=request()->student_id;

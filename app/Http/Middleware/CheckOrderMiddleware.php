@@ -23,15 +23,20 @@ class CheckOrderMiddleware
         //$obj= new stdClass();
         //print_r( $request->order_property);
         //echo array_count_values(array_column($obj, 'size'))['L'];
-        $temp_array=array();
         
+
+        $temp_array=array();
+        $fail_student=array();
+        $not_work=false;
         foreach($request->order_property as $order_property){
 
             if($order_property["student_id"]!=null&&$order_property['size']!=null&&$order_property['color']!=null){
                 
                 $student=Order::where('stu_id',$order_property["student_id"])->where('has_cancel',0)->first();
                 if ($student != null) {
-                    return redirect()->back()->with('warning', $order_property["student_id"].'學生已訂購');
+                    //$index=array_search($order_property["student_id"],$request->order_property);
+                    $fail_student[$order_property["student_id"]]=array();
+                    array_push($fail_student[$order_property["student_id"]], "fail_hasorder");
                 }
 
                 if(!isset($temp_array[$order_property['size']])){
@@ -59,30 +64,49 @@ class CheckOrderMiddleware
                                 ->get()[0]->id;  
                 }
                 catch(Exception $ex){
-                    return redirect()->back()->with('warning', '無法輸入不存在的樣式');
+                    if(!isset($fail_student[$order_property["student_id"]])){
+                        $fail_student[$order_property["student_id"]]=array();
+                    }
+                    array_push($fail_student[$order_property["student_id"]], "fail_notfound");
+                    $not_work=true;
+                    //return redirect()->back()->withInput(['old_order'=>$request->order_property])->with('warning', '無法輸入不存在的樣式');
                 }
             }
             else{
-                return redirect()->back()->with('warning', '欄位不能是空的');
+                if(!isset($fail_student[$order_property["student_id"]])){
+                    $fail_student[$order_property["student_id"]]=array();
+                }
+                array_push($fail_student[$order_property["student_id"]], "fail_inputnull");
+                //return redirect()->back()->withInput(['old_order'=>$request->order_property])->with('warning', '欄位不能是空的');
             }
             
         }
         //echo count($temp_array);
         if(count($temp_array)>10){
-            return redirect()->back()->with('warning', '訂單數量不能大於10筆');
+            $fail_student["over_quantity"]="true";
+            //return redirect()->back()->with('warning', '訂單數量不能大於10筆');
         }
-        $remind=DB::table('cloths')->leftJoin('orders',function($l_join){
-            $l_join->on('orders.cloth','=','cloths.id')->orOn('orders.accessory','=','cloths.id')->where('orders.has_cancel',0);
-        })->select(DB::raw('cloths.type,cloths.name,cloths.property,(cloths.quantity-count(orders.id)) as remainder'))
-        ->groupby('cloths.id')
-        ->where('cloths.type','=',Auth::guard('student')->user()->m_or_b)
-        ->get();
-        foreach($temp_array as $temp_array => $value){
-            if($remind->where('type',Auth::guard('student')->user()->m_or_b)->where('property',$temp_array)->first()->remainder - $value <=0){
-                //return redirect('/')->withInput();
-                return redirect()->back()->with('warning', '衣服尺寸'.$temp_array.'已沒有');
+        if(!$not_work){
+            $remind=DB::table('cloths')->leftJoin('orders',function($l_join){
+                $l_join->on('orders.cloth','=','cloths.id')->orOn('orders.accessory','=','cloths.id')->where('orders.has_cancel',0);
+            })->select(DB::raw('cloths.type,cloths.name,cloths.property,(cloths.quantity-count(orders.id)) as remainder'))
+            ->groupby('cloths.id')
+            ->where('cloths.type','=',Auth::guard('student')->user()->m_or_b)
+            ->get();
+            foreach($temp_array as $temp_array => $value){
+                if($remind->where('type',Auth::guard('student')->user()->m_or_b)->where('property',$temp_array)->first()->remainder - $value <=0){
+                    if(!isset($fail_student[$order_property["student_id"]])){
+                        $fail_student[$order_property["student_id"]]=array();
+                    }
+                    array_push($fail_student[$temp_array], "is_null");
+                    //return redirect()->back()->withInput(['old_order'=>$request->order_property])->with('warning', '衣服尺寸'.$temp_array.'已沒有');
+                }
+    
             }
-
+        }
+       
+        if(!empty($fail_student)){
+            return redirect()->back()->withInput(['old_order'=>$request->order_property,'fail_student'=>$fail_student]);
         }
         return $next($request);
     }

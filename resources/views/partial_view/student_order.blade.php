@@ -12,7 +12,6 @@
     </tr>
 </thead>
 <tbody>
-
 @foreach($student_order as $student_order)
   @if(!$student_order['have_orders']->isEmpty())
     <tr>

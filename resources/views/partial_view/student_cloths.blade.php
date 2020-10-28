@@ -11,6 +11,7 @@
     
     </tr>
 </thead>
+
 <tbody>
 @foreach($student_order as $student_order)
     <tr>

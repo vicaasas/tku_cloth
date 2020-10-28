@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->string('order_id')->comment('訂單編號');
             
             $table->integer('stu_id')->comment('使用者 ID');
-            $table->foreign('stu_id')->references('student_id')->on('students');
+            $table->foreign('stu_id')->references('student_id')->on('students')->onDelete("cascade");
 
             $table->bigInteger('cloth')->unsigned()->comment('衣物 ID');
             $table->foreign('cloth')->references('id')->on('cloths');
