@@ -72,9 +72,21 @@
                                 </div>
                             </div>
                         </form>
+                       
                     </div>
                 </div>
             </div>
+
+        </div>
+        <div style="margin-left:40%;">
+            <p><font color="#FF0000">學生登入帳號為個人學號，密碼為學號後六碼。</font></p>
+            <br />
+            <a href="{{ asset('pdf/108announcement.pdf') }}" target="_blank">◎ 108學年度碩士、學士學位服借用告公內容 ◎</a>
+            <br />
+            <a href="{{ asset('pdf/user_manual.pdf') }}" target="_blank">◎ 使用說明 ◎</a>
+            <br />
+            <a href="{{ asset('pdf/Notice.pdf') }}" target="_blank">◎ 淡江大學學位服借用要點 ◎</a>
+            <br />
         </div>
     </div>
 @endsection

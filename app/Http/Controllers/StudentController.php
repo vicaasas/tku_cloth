@@ -7,6 +7,7 @@ use Auth;
 use App\Order;
 use App\Cloth;
 use App\Student;
+use App\GetTime;
 use App\StudentHaveOrders;
 use App\ViewOrder;
 use DB;
@@ -58,6 +59,7 @@ class StudentController extends Controller
 
         return view('index',
         [
+            'get_cloths_time'=>GetTime::where("degree",$student_data->m_or_b)->get(),
             'user'=>$student_data,
             'cancel_order'=>StudentHaveOrders::where('stu_id',$student_data->student_id)->with('this_cancels')->get(),
             'self_order'=>$self_order,

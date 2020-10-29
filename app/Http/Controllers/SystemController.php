@@ -25,14 +25,16 @@ class SystemController extends Controller
         $this->validateUser($request);
 
         
-        // if ($request->has('stu_id')) {
-        //     // 學生
-        //     $user->username = $request->stu_id;
-        //     $user->password = bcrypt(substr($request->stu_id, -6));
-        //     $user->name = $request->name;
-        //     $user->department = $request->department;
-        //     $user->class = $request->class;
-        // } else {
+        if ($request->has('stu_id')) {
+            // 學生
+            $student = new Student();
+            $student->student_id = $request->stu_id;
+            $student->password = md5(substr($request->stu_id, 3, 6));
+            $student->student_name = $request->name;
+            $student->class_name = $request->class_name;
+            $user->class_id = $request->class_id;
+            $user->save();
+        } else {
             // 管理員
             $user = new User();
             $user->name = $request->name;
@@ -41,7 +43,7 @@ class SystemController extends Controller
             $user->role = User::ROLE_ADMIN;
             $user->base64Img = '';
             $user->save();
-        //}
+        }
 
         $request->session()->flash('success', '使用者新增成功！');
         return $this->redirectAfterDone();

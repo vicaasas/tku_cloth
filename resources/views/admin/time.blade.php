@@ -67,7 +67,7 @@
                                                         <div class="modal-body">
                                                             <div class="form-group">
                                                                 <label for="start_time">開始時間</label>
-                                                                <input type="date"
+                                                                <input type="datetime-local"
                                                                        class="form-control @error('start_time') is-invalid @enderror"
                                                                        id="start_time"
                                                                        name="start_time"
@@ -80,7 +80,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="end_time">結束時間</label>
-                                                                <input type="date"
+                                                                <input type="datetime-local"
                                                                        class="form-control @error('end_time') is-invalid @enderror"
                                                                        id="end_time"
                                                                        name="end_time"
@@ -187,7 +187,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="start_time">開始時間</label>
-                                            <input type="date"
+                                            <input type="datetime-local"
                                                    class="form-control @error('start_time') is-invalid @enderror"
                                                    id="start_time" name="start_time">
 
@@ -197,7 +197,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="end_time">結束時間</label>
-                                            <input type="date"
+                                            <input type="datetime-local"
                                                    class="form-control @error('end_time') is-invalid @enderror"
                                                    id="end_time" name="end_time">
 

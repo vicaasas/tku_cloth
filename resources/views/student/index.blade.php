@@ -2,7 +2,7 @@
     <div class="container text-center h2">
         您好，{{ $user->student_name }} 同學
     </div>
-
+    
     個人訂單
     <br>
     @if($self_order != null)
@@ -142,7 +142,7 @@ $('#recover_bt').click(function() {
     <br>
     {{ $cloth_remainder }}
     {{ json_encode(old()) }}
-
+    {{ $get_cloths_time }}
     <a href="{{ route('student_bill_pdf',$user->student_id) }}" target="_blank">列印繳費單</a>
     <a href="{{ route('receipt_bail') }}" target="_blank">列印保證金繳費證明</a>
     <a href="{{ route('bill_proof') }}" target="_blank">列印洗滌及折舊費繳費證明</a>
@@ -163,6 +163,10 @@ $('#recover_bt').click(function() {
             <input type="text" name="order_property[1][size]" placeholder="尺寸">
             <input type="text" name="order_property[1][color]" placeholder="顏色">
         </div>
+        @foreach($get_cloths_time as $get_cloths_time)
+        <input type="checkbox" id="time{{ $get_cloths_time->id }}" name="get_time_id" value="{{ $get_cloths_time->id }}">
+        <label for="time{{ $get_cloths_time->id }}"> {{ $get_cloths_time->time }}</label><br>
+        @endforeach
 <!-- 
 
 

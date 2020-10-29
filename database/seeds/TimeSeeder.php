@@ -18,33 +18,39 @@ class TimeSeeder extends Seeder
          */
         DB::table('times')->insert([
             'content' => '借用時間',
-            'start_time' => date("Y-m-d"),
-            'end_time' => date("Y-m-d"),
+            'start_time' => date("Y-m-d H:i H:i"),
+            'end_time' => date("Y-m-d H:i"),
         ]);
         DB::table('times')->insert([
             'content' => '收據列印時間',
-            'start_time' => date("Y-m-d"),
-            'end_time' => date("Y-m-d"),
+            'start_time' => date("Y-m-d H:i"),
+            'end_time' => date("Y-m-d H:i"),
         ]);
         DB::table('times')->insert([
             'content' => '繳費期限',
-            'start_time' => date("Y-m-d"),
-            'end_time' => date("Y-m-d"),
+            'start_time' => date("Y-m-d H:i"),
+            'end_time' => date("Y-m-d H:i"),
         ]);
         DB::table('times')->insert([
             'content' => '歸還期限',
-            'start_time' => date("Y-m-d"),
-            'end_time' => date("Y-m-d"),
+            'start_time' => date("Y-m-d H:i"),
+            'end_time' => date("Y-m-d H:i"),
         ]);
-        DB::table('times')->insert([
-            'content' => '領取時間(學士服)',
-            'start_time' => date("Y-m-d"),
-            'end_time' => date("Y-m-d"),
+        DB::table('get_cloths_time')->insert([
+            'degree' => '學士',
+            'time' => date("Y-m-d H:i"),
         ]);
-        DB::table('times')->insert([
-            'content' => '領取時間(碩士服)',
-            'start_time' => date("Y-m-d"),
-            'end_time' => date("Y-m-d"),
+        DB::table('get_cloths_time')->insert([
+            'degree' => '學士',
+            'time' => date("Y-m-d H:i"),
+        ]);
+        DB::table('get_cloths_time')->insert([
+            'degree' => '碩士',
+            'time' => date("Y-m-d H:i"),
+        ]);
+        DB::table('get_cloths_time')->insert([
+            'degree' => '碩士',
+            'time' => date("Y-m-d H:i"),
         ]);
     }
 }

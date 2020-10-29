@@ -43,9 +43,10 @@ class OrderController extends Controller
     public function save(){
 
         if(Auth::guard('student')->check()){
-            //return gettype(request()->all());
+            //return request()->all();
             $student_order=new StudentHaveOrders();
             $student_order->stu_id=Auth::guard('student')->user()->student_id;
+            $student_order->get_time_id=request()->get_time_id;
             $student_order->save();
             $now_index=StudentHaveOrders::where('stu_id',Auth::guard('student')->user()->student_id)
                     ->latest('id')->first()->id;
@@ -141,8 +142,6 @@ class OrderController extends Controller
     }
     public function student_all_order_delete(){
         $order_id=request()->order_id;//得到此訂單在orders中的id
-
-        Order::where('order_id', $order_id)->delete();
         StudentHaveOrders::where('order_id', $order_id)->delete();
         return redirect()->back()->with('success', '訂單刪除成功');
     }

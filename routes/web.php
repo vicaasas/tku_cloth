@@ -46,10 +46,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('degree_total', 'ReportController@degree_total')
         ->name('degree_total');
 
-        Route::get('not_return', 'PdfController@not_return')
+        Route::get('not_return/{degree}', 'PdfController@not_return')
         ->name('not_return');
 
-        Route::get('is_return', 'PdfController@is_return')
+        Route::get('is_return/{degree}', 'PdfController@is_return')
         ->name('is_return');
 
         Route::get('exportCsv', 'PdfController@exportCsv')

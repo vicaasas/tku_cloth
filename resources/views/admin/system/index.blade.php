@@ -50,27 +50,34 @@
                                     @enderror
                                 </div>
                             </div>
+                            
                             <div class="form-group row">
-                                <label for="department" class="col-md-4 col-form-label text-md-right">學制</label>
-                                <div class="col-md-6">
-                                    <select id="department" class="form-control" name="department">
-                                        <option>{{ \App\User::DEPARTMENT_BACHELOR }}</option>
-                                        <option>{{ \App\User::DEPARTMENT_MASTER }}</option>
-                                        <option>{{ \App\User::DEPARTMENT_DOCTOR }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="class" class="col-md-4 col-form-label text-md-right">
-                                    系級
+                                <label for="class_name" class="col-md-4 col-form-label text-md-right">
+                                    班級
                                 </label>
 
                                 <div class="col-md-6">
-                                    <input id="class" type="text"
-                                           class="form-control @error('class') is-invalid @enderror"
-                                           name="class" required autocomplete="class">
+                                    <input id="class_name" type="text"
+                                           class="form-control @error('class_name') is-invalid @enderror"
+                                           name="class_name" required autocomplete="class_name">
 
-                                    @error('class')
+                                    @error('class_name')
+                                    <span class="invalid-feedback"
+                                          role="alert"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="class_id" class="col-md-4 col-form-label text-md-right">
+                                    班級代碼
+                                </label>
+
+                                <div class="col-md-6">
+                                    <input id="class_id" type="text"
+                                           class="form-control @error('class_id') is-invalid @enderror"
+                                           name="class_id" required autocomplete="class_id">
+
+                                    @error('class_id')
                                     <span class="invalid-feedback"
                                           role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror

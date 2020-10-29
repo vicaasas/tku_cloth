@@ -3,7 +3,8 @@
         <meta charset="utf-8">
     </head>
     <body>
-        <p style="font-size:50px;width:100%;text-align:center;">{{ $pdf_name }}</p>
+        <p style="font-size:50px;width:100%;text-align:center;">{{ (date("Y") - 1911) }}年 {{ $degree }}{{ $pdf_name }}</p>
+        <div style="font-size:25px;margin-left:10%;">數量: {{ $return_order_state->count() }}</div>
         <table cellpadding="10" border="1" style="margin:0 auto;">
             <thead>
                 <tr>

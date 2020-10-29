@@ -18,8 +18,10 @@
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="{{ route('report.all_student_order') }}" target="_blank">學生清單</a>
         <a class="dropdown-item" href="{{ route('report.total') }}" target="_blank">總表清單</a>
-        <a class="dropdown-item" href="{{ route('report.not_return') }}" target="_blank">未歸還清單</a>
-        <a class="dropdown-item" href="{{ route('report.is_return') }}" target="_blank">已歸還名冊</a>
+        <a class="dropdown-item" href="{{ route('report.not_return','學士') }}" target="_blank">學士未歸還清單</a>
+        <a class="dropdown-item" href="{{ route('report.is_return','學士') }}" target="_blank">學士已歸還名冊</a>
+        <a class="dropdown-item" href="{{ route('report.not_return','碩士') }}" target="_blank">碩士未歸還清單</a>
+        <a class="dropdown-item" href="{{ route('report.is_return','碩士') }}" target="_blank">碩士已歸還名冊</a>
     </div>
 </li>
 <li>
