@@ -82,6 +82,9 @@ class CheckOrderMiddleware
             
         }
         //echo count($temp_array);
+        if($request->get_time_id==null){
+            $fail_student["time_null"]="true";
+        }
         if(count($temp_array)>10){
             $fail_student["over_quantity"]="true";
             //return redirect()->back()->with('warning', '訂單數量不能大於10筆');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Time;
+use App\GetClothTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
@@ -44,6 +45,19 @@ class TimeController extends Controller
         $time->start_time = $request->input('start_time');
         $time->end_time = $request->input('end_time');
         $time->save();
+        $request->session()->flash('success', '新增資料成功！');
+        return $this->redirectAfterDone();
+    }
+
+    public function get_time_save(Request $request)
+    {
+        $this->validateTime($request);
+
+        $get_time = new GetClothTime();
+        $get_time->degree = $request->input('degree');
+        $get_time->start_time = $request->input('start_time');
+        $get_time->end_time = $request->input('end_time');
+        $get_time->save();
         $request->session()->flash('success', '新增資料成功！');
         return $this->redirectAfterDone();
     }

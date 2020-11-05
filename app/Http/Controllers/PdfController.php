@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Time;
+use App\GetClothTime;
 use DB;
 use PDF;
 use View;
@@ -14,49 +15,10 @@ use App\Student;
 use App\StudentHaveOrders;
 class PdfController extends Controller
 {
-    public function student_bill_pdf(){
-        $time=Time::all();
-        $student_id=request()->student_id;
-        $order_id=request()->order_id;
-        $student_data=Student::where('student_id',$student_id)->first();
-        if(Gate::allows('admin')){
-            $admin=Auth::user();
-        }
-        else{
-            $admin=null;
-        }
-        if($student_data->m_or_b=="碩士"){
-            $cloth_pick_time=$time->where('content','領取時間(碩士服)')->first();
-        }
-        else{
-            $cloth_pick_time=$time->where('content','領取時間(學士服)')->first();
-        }
-        $bill_pdf=View::make('partial_view.bill',[
-            'student_data'=>$student_data,
-            'student_order'=>StudentHaveOrders::where('stu_id',$student_id)->where('order_id',$order_id)->with('have_orders')->first(),
-            'payment_time'=>$time->where('content','繳費期限')->first(),
-            'cloth_pick_time'=>$cloth_pick_time,
-            'bill_receipt'=>['繳費收據(事務整備組)','繳款人收據'],
-            'admin'=>$admin,
-        ]);
 
-        // $bill_pdf=View::make('partial_view.bill',[
-        //     'student_id'=>request()->student_id,
-        //     'order_number'=>DB::table('student_order')->select(DB::raw('count(class_name) as total'))->where('class_name',request()->class_name)->first(),
-        //     'payment_time'=>$time->where('content','繳費期限')->first(),
-        //     'cloth_pick_time'=>$cloth_pick_time,
-        //     'bill_receipt'=>['出納','繳款人','事務整備組'],
-        //     'degree'=>$degree,
-        // ]);
-        $html = $bill_pdf->render();
-        //return $html;
-        $pdf = PDF::loadHTML($html);
-        return $pdf->stream('學士服繳費單.pdf');
-    }
     public function not_return(){
-
         $not_return_order = DB::table('student_order')->select(DB::raw('*'))->where('type',request()->degree)->where('return',0)->where('has_get_cloths',1)->get();   
-        $not_return_pdf=View::make('partial_view.pdf_order_table',[
+        $not_return_pdf=View::make('create_pdf.pdf_order_table',[
             'degree'=>request()->degree,
             'pdf_name'=>"未歸還名單",
             'return_order_state'=>$not_return_order,
@@ -68,7 +30,7 @@ class PdfController extends Controller
     }
     public function is_return(){
         $is_return_order = DB::table('student_order')->select(DB::raw('*'))->where('type',request()->degree)->where('return',1)->get();   
-        $is_return_pdf=View::make('partial_view.pdf_order_table',[
+        $is_return_pdf=View::make('create_pdf.pdf_order_table',[
             'degree'=>request()->degree,
             'pdf_name'=>"已歸還名冊",
             'return_order_state'=>$is_return_order,
@@ -100,7 +62,7 @@ class PdfController extends Controller
         $return_due_date=Time::where('content','借用時間')->first();
         $this_year = explode('-', $return_due_date->end_time);
         $year = $this_year[0] - 1911;
-        $is_return_pdf=View::make('partial_view.receipt_bail',[
+        $is_return_pdf=View::make('create_pdf.receipt_bail',[
             'student_data'=>$student_data,
             'year'=>(date("Y") - 1911),
             'month'=>date("m"),
@@ -114,8 +76,53 @@ class PdfController extends Controller
         //
         $pdf = PDF::loadHtml($html)->setPaper('a5', 'landscape');
         
-        return $pdf->stream('已歸還名冊.pdf');
+        return $pdf->stream('保證金繳費證明.pdf');
     }
+
+    public function student_bill_pdf($student_id,$order_id){
+        $payment_time = Time::where('content','繳費期限')->first();
+
+        // $student_id=request()->student_id;
+        // $order_id=request()->order_id;
+        $student_data=Student::where('student_id',$student_id)->first();
+
+        $student_order=StudentHaveOrders::where('stu_id',$student_id)->where('order_id',$order_id)->first();
+
+        if(Gate::allows('admin')){
+            $admin=Auth::user()->name;
+        }
+        else{
+            $admin=null;
+        }
+        if($student_data->m_or_b=="碩士"){
+            $cloth_pick_time=GetClothTime::where('id',$student_order->get_time_id)->first();
+        }
+        else{
+            $cloth_pick_time=GetClothTime::where('id',$student_order->get_time_id)->first();
+        }
+        $bill_pdf=View::make('create_pdf.bill',[
+            'student_data'=>$student_data,
+            'student_order'=>StudentHaveOrders::where('stu_id',$student_id)->where('order_id',$order_id)->with('have_orders')->first(),
+            'payment_time'=>$payment_time,
+            'cloth_pick_time'=>$cloth_pick_time,
+            'bill_receipt'=>['繳費收據(事務整備組)','繳款人收據'],
+            'admin'=>$admin,
+        ]);
+
+        // $bill_pdf=View::make('partial_view.bill',[
+        //     'student_id'=>request()->student_id,
+        //     'order_number'=>DB::table('student_order')->select(DB::raw('count(class_name) as total'))->where('class_name',request()->class_name)->first(),
+        //     'payment_time'=>$time->where('content','繳費期限')->first(),
+        //     'cloth_pick_time'=>$cloth_pick_time,
+        //     'bill_receipt'=>['出納','繳款人','事務整備組'],
+        //     'degree'=>$degree,
+        // ]);
+        $html = $bill_pdf->render();
+        //return $html;
+        $pdf = PDF::loadHTML($html);
+        return $pdf->stream('學士服繳費單.pdf');
+    }
+
     public function bill_proof(){
         $is_return_order = DB::table('student_order')->select(DB::raw('*'))->where('has_paid',1)->where('has_get_cloths',1)->get();   
         $student_data=Auth::guard('student')->user();
@@ -138,7 +145,7 @@ class PdfController extends Controller
         $return_due_date=Time::where('content','借用時間')->first();
         $this_year = explode('-', $return_due_date->end_time);
         $year = $this_year[0] - 1911;
-        $is_return_pdf=View::make('partial_view.receipt_proof',[
+        $is_return_pdf=View::make('create_pdf.receipt_proof',[
             'student_data'=>$student_data,
             'year'=>(date("Y") - 1911),
             'month'=>date("m"),
@@ -152,11 +159,11 @@ class PdfController extends Controller
         //
         $pdf = PDF::loadHtml($html)->setPaper('a5', 'landscape');
         
-        return $pdf->stream('已歸還名冊.pdf');
+        return $pdf->stream('洗滌及折舊費繳費證明.pdf');
     }
     public function exportCsv()
     {
-        $year=date('Y')-1911;
+        $year=substr(env('DB_DATABASE'),0,3);
         $fileName = $year.'訂單詳細資訊.csv';
         $tasks = DB::table('student_order')->where('has_paid',1)->get();
      

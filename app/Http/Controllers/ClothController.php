@@ -45,7 +45,7 @@ class ClothController extends Controller
     {
         $this->validateCloth($request);
 
-//        return $request;
+        //return $request;
         $cloth = new Cloth();
         $cloth->type = $request->type;
         $cloth->name = $request->name;

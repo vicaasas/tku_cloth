@@ -11,6 +11,9 @@ class User extends Authenticatable
     use Notifiable;
 
     const ROLE_ADMIN = 'admin';
+    const ROLE_SUB_ADMIN = 'sub_admin';
+    const ROLE_GIVE_CLOTH_PEOPLE = 'give_cloth_people';
+
     const ROLE_STUDENT = 'student';
 
     const DEPARTMENT_BACHELOR = '學士';

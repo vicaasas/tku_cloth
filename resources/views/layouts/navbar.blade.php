@@ -9,12 +9,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <ul class="navbar-nav mr-auto">
-            
-                @can('admin')
+                @if(Gate::check('admin') || Gate::check('sub_admin') || Gate::check('give_cloth_people'))
                     @include('admin.navbar')
-                @elsecan('student')
+                @elseif(Gate::check('student'))
                     @include('student.navbar')
-                @endcan
+                @endif
             </ul>
             @guest
                 <div class="navbar-nav">

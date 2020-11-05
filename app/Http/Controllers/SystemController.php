@@ -17,7 +17,10 @@ class SystemController extends Controller
     }
     public function index()
     {
-        return view('admin.system.index');
+        //return explode(',',env('HISTORY_DATABASE',null),-1);
+        return view('admin.system.index',[
+            'history_rent_cloth'=>explode(',',env('HISTORY_DATABASE',null),-1),
+        ]);
     }
 
     public function new_user(Request $request)
@@ -37,16 +40,24 @@ class SystemController extends Controller
         } else {
             // 管理員
             $user = new User();
-            $user->name = $request->name;
+            $user->name = $request->admin_name;
             $user->username = $request->username;
             $user->password = bcrypt($request->password);
-            $user->role = User::ROLE_ADMIN;
+            $user->role = $request->admin_authority;
             $user->base64Img = '';
             $user->save();
         }
 
         $request->session()->flash('success', '使用者新增成功！');
         return $this->redirectAfterDone();
+    }
+    public function give_admin_authority(Request $request)
+    {
+        User::where('username',$request->account)->update([
+            'role'=>$request->give_admin_authority,
+        ]);
+        $request->session()->flash('success', '授權成功！');
+        return redirect()->route('system.index');
     }
 
     private function validateUser(Request $request)
@@ -71,6 +82,16 @@ class SystemController extends Controller
         //}
 
     }
+    public function recover_password(Request $request)
+    {
+        Student::where('student_id',$request->recover_stu_id)->update([
+            'passwd'=>md5(substr($request->recover_stu_id, 3, 6)),
+        ]);
+        $request->session()->flash('success', '學生密碼還原成功！');
+        return redirect()->route('system.index');
+    }
+
+
     public function importstudent(Request $request){
         //return Auth::user()->username;
         $request->validate(
@@ -92,9 +113,9 @@ class SystemController extends Controller
         $count=0;
         foreach($rows as $index){
             
-            // if($count==25){
-            //     break;
-            // }
+            if($count==25){
+                break;
+            }
             $student = new Student();
             $student->student_id = $index['student_id'];
             $student->class_id = $index['class_id'];

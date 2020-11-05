@@ -38,19 +38,23 @@ class TimeSeeder extends Seeder
         ]);
         DB::table('get_cloths_time')->insert([
             'degree' => '學士',
-            'time' => date("Y-m-d H:i"),
+            'start_time' => date("Y-m-d H:i"),
+            'end_time' => date("Y-m-d H:i"),
         ]);
         DB::table('get_cloths_time')->insert([
             'degree' => '學士',
-            'time' => date("Y-m-d H:i"),
+            'start_time' => date("Y-m-d H:i"),
+            'end_time' => date("Y-m-d H:i"),
         ]);
         DB::table('get_cloths_time')->insert([
             'degree' => '碩士',
-            'time' => date("Y-m-d H:i"),
+            'start_time' => date("Y-m-d H:i"),
+            'end_time' => date("Y-m-d H:i"),
         ]);
         DB::table('get_cloths_time')->insert([
             'degree' => '碩士',
-            'time' => date("Y-m-d H:i"),
+            'start_time' => date("Y-m-d H:i"),
+            'end_time' => date("Y-m-d H:i"),
         ]);
     }
 }

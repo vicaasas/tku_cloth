@@ -4,7 +4,6 @@
 <select onchange="change_degree(this)">
 <option value="學士">學士</option>
 <option value="碩士">碩士</option>
-<option value="博士">博士</option>
 </select>
 <table class="table table-sm table-striped table-hover table-condensed" id="cloth_table">
     {!! $all_cloth_table !!}
@@ -26,7 +25,7 @@
             });
             $.ajax({
                 type:'post',
-                url:"{{ route('report.degree_total') }}",
+                url:"{{ route('report.change_degree') }}",
                 data:{degree:degree.value},
 
                 success:function(data){

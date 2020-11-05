@@ -23,13 +23,10 @@ class ReportController extends Controller
         else if($m_or_b=='學士'){
             $class_name=Student::select(Student::raw('class_name'))
                         ->where('class_name','not like','%碩%')
-                        ->where('class_name','not like','%博%')
                         ->groupBy('class_name')->get();
         }
-        else if($m_or_b=='博士'){
-            $class_name=Student::select(Student::raw('class_name'))->where('class_name','like','%博%')->groupBy('class_name')->get();
-        }
-        $table=View::make('partial_view.order_table',[
+
+        $table=View::make('partial_view.class_order_table',[
             'class_name'=>$class_name,
             'all_cloth'=>Cloth::select(Cloth::raw('property'))->where('type',$m_or_b)->get(),
             'cloth_data'=>DB::table('student_order')->select(DB::raw('class_name,type, cloth, size, COUNT(size) as total'))
@@ -66,12 +63,12 @@ class ReportController extends Controller
         //         ->get();
         return view('admin.report.total',self::get_degree('學士'));
     }
-    public function degree_total(){
+    public function change_degree(){
         return response()->json(self::get_degree(request()->degree));
     }
 
     public function class_order($class_name){
-        return view('admin.report.class_order',
+        return view('admin.report.self_class_order',
         [
             "class_name" => $class_name,
             "class_order" =>Student::leftJoin('student_order',function($l_join){

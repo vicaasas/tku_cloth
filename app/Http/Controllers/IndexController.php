@@ -6,6 +6,7 @@ use App\Cloth;
 use App\Config;
 use App\Order;
 use App\Time;
+use App\GetClothTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -17,6 +18,7 @@ class IndexController extends Controller
     }
     public function index(Request $request)
     {
+
         //return $request->session()->all();
         $cloths = Cloth::all();
 
@@ -68,6 +70,7 @@ class IndexController extends Controller
             [
                 'location' => Config::where('key', '歸還地點')->first()->value,
                 'time_list' => Time::all(),
+                'get_cloth_time_list' => GetClothTime::all(),
                 'cloth_table' => $cloth_table,
             ]);
     }

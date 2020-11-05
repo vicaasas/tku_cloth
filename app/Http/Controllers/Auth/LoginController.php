@@ -29,11 +29,12 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-
+ 
         return view('auth.login');
     }
     public function login(Request $request)
     {
+
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -66,9 +67,17 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        if(Gate::allows('admin')){
+
+        if(Gate::allows('admin')|| Gate::allows('sub_admin') || Gate::allows('give_cloth_people')){
             $this->guard()->logout();
         }
+        // if(Gate::allows('sub_admin')){
+        //     Auth::guard('sub_admin')->logout();
+        // }
+
+        // if(Gate::allows('give_cloth_people')){
+        //     Auth::guard('give_cloth_people')->logout();
+        // }
 
         if(Gate::allows('student')){
             Auth::guard('student')->logout();

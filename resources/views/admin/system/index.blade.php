@@ -93,85 +93,35 @@
                         </form>
                     </div>
                 </div>
-                <div class="card mb-3">
-                    <div class="card-header">
-                        新增管理員
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('system.new_user') }}">
-                            @csrf
-                            <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">
-                                    使用者姓名
-                                </label>
+                <div class="card-header">
+                    還原學生密碼
+                    <form method="POST" action="{{ route('system.recover_password') }}">
+                        @csrf
+                        <div class="form-group row">
+                            <label for="recover_stu_id" class="col-md-4 col-form-label text-md-right">
+                                學號
+                            </label>
 
-                                <div class="col-md-6">
-                                    <input id="name" type="text"
-                                           class="form-control @error('name') is-invalid @enderror"
-                                           name="name" required autocomplete="name">
+                            <div class="col-md-6">
+                                <input id="recover_stu_id" type="text"
+                                        class="form-control @error('recover_stu_id') is-invalid @enderror"
+                                        name="recover_stu_id" required autocomplete="recover_stu_id">
 
-                                    @error('name')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
-                                </div>
+                                @error('recover_stu_id')
+                                <span class="invalid-feedback"
+                                        role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
                             </div>
-                            <div class="form-group row">
-                                <label for="username" class="col-md-4 col-form-label text-md-right">
-                                    使用者帳號
-                                </label>
-
-                                <div class="col-md-6">
-                                    <input id="username" type="text"
-                                           class="form-control @error('username') is-invalid @enderror"
-                                           name="username" required autocomplete="username">
-
-                                    @error('username')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
-                                </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    還原
+                                </button>
                             </div>
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">
-                                    使用者密碼
-                                </label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password"
-                                           class="form-control @error('password') is-invalid @enderror"
-                                           name="password" required autocomplete="password">
-
-                                    @error('password')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="password_confirmation" class="col-md-4 col-form-label text-md-right">
-                                    確認密碼
-                                </label>
-
-                                <div class="col-md-6">
-                                    <input id="password_confirmation" type="password"
-                                           class="form-control @error('password_confirmation') is-invalid @enderror"
-                                           name="password_confirmation" required autocomplete="password_confirmation">
-
-                                    @error('password_confirmation')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        新增管理員
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
+                        </div>
+                    </form>
+                </div>  
                 <div class="card mb-3">
                     <div class="card-header">
                         匯入學生資料
@@ -179,8 +129,10 @@
                     <div class="card-body">
                         <form method="post"  enctype="multipart/form-data" action="{{ route('system.import_students') }}">
                             @csrf
+                            <div>(請更新系統參數)</div>
                             <input type="file" name="csv_file" id="csv_file" class="form-control-file @error('csv_file') is-invalid @enderror">
                             @error('csv_file')
+                            
                             <span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
@@ -237,7 +189,174 @@
                             </div>
                         </div>
                     </div>
+                </div>              
+            </div>
+            <div class="col-sm-6">
+                @can('admin')
+                     <div class="card mb-3">
+                        <div class="card-header">
+                            歷屆學士服租借
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('system.history_rent_cloth') }}" method="get">
+                                @csrf
+                                <select id="admin_authority" class="form-control" name="record_year">
+                                    @foreach($history_rent_cloth as $history_rent_cloth)
+                                        <option value="{{ substr($history_rent_cloth,0,3) }}">{{ substr($history_rent_cloth,0,3) }}學年度</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="btn btn-primary">
+                                    確定
+                                </button>
+                            </form> 
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            進行今年學士服的租借
+                        </div>
+                        <form action="{{ route('system.create_next_year_TKU-graduate-gown') }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">
+                                進行
+                            </button>
+                        </form> 
+
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            新增管理員
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('system.new_user') }}">
+                                @csrf
+                                <div class="form-group row">
+                                    <label for="admin_name" class="col-md-4 col-form-label text-md-right">
+                                        使用者姓名
+                                    </label>
+
+                                    <div class="col-md-6">
+                                        <input id="admin_name" type="text"
+                                            class="form-control @error('admin_name') is-invalid @enderror"
+                                            name="admin_name" required autocomplete="admin_name">
+
+                                        @error('admin_name')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="username" class="col-md-4 col-form-label text-md-right">
+                                        使用者帳號
+                                    </label>
+
+                                    <div class="col-md-6">
+                                        <input id="username" type="text"
+                                            class="form-control @error('username') is-invalid @enderror"
+                                            name="username" required autocomplete="username">
+
+                                        @error('username')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password" class="col-md-4 col-form-label text-md-right">
+                                        使用者密碼
+                                    </label>
+
+                                    <div class="col-md-6">
+                                        <input id="password" type="password"
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            name="password" required autocomplete="password">
+
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password_confirmation" class="col-md-4 col-form-label text-md-right">
+                                        確認密碼
+                                    </label>
+
+                                    <div class="col-md-6">
+                                        <input id="password_confirmation" type="password"
+                                            class="form-control @error('password_confirmation') is-invalid @enderror"
+                                            name="password_confirmation" required autocomplete="password_confirmation">
+
+                                        @error('password_confirmation')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="admin_authority" class="col-md-4 col-form-label text-md-right">權限</label>
+                                    <div class="col-md-6">
+                                        <select id="admin_authority" class="form-control" name="admin_authority">
+                                            <option value="{{ \App\User::ROLE_ADMIN }}">主管理者</option>
+                                            <option value="{{ \App\User::ROLE_SUB_ADMIN }}">副管理者</option>
+                                            <option value="{{ \App\User::ROLE_GIVE_CLOTH_PEOPLE }}">受領衣物人員</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0">
+                                    <div class="col-md-8 offset-md-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            新增管理員
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                @endcan
+                <div class="card mb-3">
+                    <div class="card-header">
+                        管理者權限
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('system.give_admin_authority') }}">
+                            @csrf
+                            <div class="form-group row">
+                                <label for="account" class="col-md-4 col-form-label text-md-right">
+                                    帳號
+                                </label>
+
+                                <div class="col-md-6">
+                                    <input id="account" type="text"
+                                            class="form-control @error('account') is-invalid @enderror"
+                                            name="account" required autocomplete="account">
+
+                                    @error('account')
+                                    <span class="invalid-feedback"
+                                            role="alert"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label for="give_admin_authority" class="col-md-4 col-form-label text-md-right">權限</label>
+                                <div class="col-md-6">
+                                    <select id="give_admin_authority" class="form-control" name="give_admin_authority">
+                                        <option value="{{ \App\User::ROLE_ADMIN }}">主管理者</option>
+                                        <option value="{{ \App\User::ROLE_SUB_ADMIN }}">副管理者</option>
+                                        <option value="{{ \App\User::ROLE_GIVE_CLOTH_PEOPLE }}">受領衣物人員</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        給予
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

@@ -7,7 +7,7 @@ use Auth;
 use App\Order;
 use App\Cloth;
 use App\Student;
-use App\GetTime;
+use App\GetClothTime;
 use App\StudentHaveOrders;
 use App\ViewOrder;
 use DB;
@@ -44,27 +44,29 @@ class StudentController extends Controller
                 $agent=null;
             }
             if($student_order_data!=null){
-                $my_order_id=ViewOrder::where('student_id',$student_data->student_id)->first()->order_id;
-                $self_order=StudentHaveOrders::where('order_id',$my_order_id)->with('have_orders')->first();
+                //$my_order_id=ViewOrder::where('student_id',$student_data->student_id)->first()->order_id;
+                //$self_order=StudentHaveOrders::where('order_id',$my_order_id)->with('have_orders')->first();
+                $self_order=$student_order_data;
             }
             else if($student_cancel_order_data!=null){
-                $my_order_id=ViewOrder::where('student_id',$student_data->student_id)->first()->order_id;
-                $self_order=StudentHaveOrders::where('order_id',$my_order_id)->with('this_cancels')->first();
+                //$my_order_id=ViewOrder::where('student_id',$student_data->student_id)->first()->order_id;
+                //$self_order=StudentHaveOrders::where('order_id',$my_order_id)->with('this_cancels')->first();
+                $self_order=$student_cancel_order_data;
             }
             else{
                 $self_order=null;
                 
             }
-        //}
+        //}001850
 
         return view('index',
         [
-            'get_cloths_time'=>GetTime::where("degree",$student_data->m_or_b)->get(),
+            'get_cloths_time'=>GetClothTime::where("degree",$student_data->m_or_b)->get(),
             'user'=>$student_data,
             'cancel_order'=>StudentHaveOrders::where('stu_id',$student_data->student_id)->with('this_cancels')->get(),
             'self_order'=>$self_order,
-            'student_class_data'=>Student::where('class_id','like',substr($student_data->class_id,0,5).'%')->get(),
-            'student_order'=>$agent,
+            'class_data'=>Student::where('class_id','like',substr($student_data->class_id,0,5).'%')->get(),
+            'agent_order'=>$agent,
             'cloth_remainder'=>DB::table('cloths')->leftJoin('orders',function($l_join){
                                 $l_join->on('orders.cloth','=','cloths.id')->orOn('orders.accessory','=','cloths.id')->where('orders.has_cancel',0);
                             })->select(DB::raw('cloths.type,cloths.name,cloths.property,(cloths.quantity-count(orders.id)) as remainder'))

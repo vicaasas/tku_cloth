@@ -1,6 +1,6 @@
 <div class="container">
     <div class="text-center h2">
-        主畫面
+        {{ substr(env('DB_DATABASE'),0,3) }}學年度主畫面
     </div>
     <div class="row">
         <div class="col-sm-6">
@@ -27,6 +27,18 @@
                                 </tr>
                             @endforeach
                             </tbody>
+                        </table>
+                        
+                        <div style="float:left;">衣服領取時間</div>
+                        
+                        <table class="table table-sm table-striped table-hover table-condensed">
+                        @foreach($get_cloth_time_list as $get_cloth_time_list)
+                            <tr>
+                                <th class="text-center align-middle">{{ $get_cloth_time_list->degree }}</th>
+                                <th class="text-center align-middle">{{ $get_cloth_time_list->start_time }}</th>
+                                <th class="text-center align-middle">{{ $get_cloth_time_list->end_time }}</th>
+                            </tr>
+                        @endforeach
                         </table>
                         <a href="{{ route('time.index') }}" class="btn btn-primary">
                             管理時間段

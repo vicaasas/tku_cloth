@@ -36,7 +36,8 @@ class DatabaseSeeder extends Seeder
             'value' => '守謙會議中心 HC308',
         ]);
 
-
+        $this->call(ClothSeeder::class);
+        $this->call(TimeSeeder::class);
         /**
          * 預設物品設定
          */
