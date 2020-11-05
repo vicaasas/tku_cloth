@@ -223,4 +223,6 @@
             </div>
         </div>
     </div>
+    <div>衣物領取時間</div>
+    {{ $get_cloth_time }}
 @endsection

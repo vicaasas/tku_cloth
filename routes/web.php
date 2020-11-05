@@ -198,6 +198,8 @@ Route::group(['middleware' => ['auth']], function () {
     })->name('get_cloths_view')->middleware('can:admin');
 
     Route::resource('time', 'TimeController', ['except' => ['create', 'edit', 'show']]);
+    Route::post('/get_time_save','TimeController@get_time_save')
+    ->name('time.get_time_save')->middleware('can:admin');
 
     Route::resource('cloth', 'ClothController', ['except' => ['create', 'edit', 'show']]);
 

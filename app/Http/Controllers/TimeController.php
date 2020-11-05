@@ -17,7 +17,10 @@ class TimeController extends Controller
      */
     public function index()
     {
-        return view('admin.time', ['time_list' => Time::all(),]);
+        return view('admin.time', [
+            'time_list' => Time::all(),
+            'get_cloth_time'=>GetClothTime::all(),
+        ]);
     }
 
     /**
