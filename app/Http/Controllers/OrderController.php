@@ -18,6 +18,7 @@ class OrderController extends Controller
     // }
     //學生的功能
     public function recover_order(){
+
         $validatedData = request()->validate([
             'get_time_id' => 'required',
         ]);
@@ -25,11 +26,12 @@ class OrderController extends Controller
         if(request()->get_time_id==null){
             return redirect()->back()->withInput(['old_order'=>request()->order_property,'fail'=>"請選擇領取時間"]);
         }
-        $order_id=request()->order_id;
+        
         $get_time_id=request()->get_time_id;
-        if(StudentHaveOrders::where('order_id', $order_id)->with('have_orders')->first()->have_orders->isEmpty()){
-            StudentHaveOrders::where('order_id', $order_id)->delete();
-        }
+        $order_id=request()->order_id;
+        $agent_order=StudentHaveOrders::where('order_id', $order_id)->first();
+        $responsible_person=$agent_order->stu_id;
+
         $student_order=new StudentHaveOrders();
         $student_order->stu_id=Auth::guard('student')->user()->student_id;
         $student_order->get_time_id=$get_time_id;
@@ -43,12 +45,25 @@ class OrderController extends Controller
         StudentHaveOrders::where('id',$now_index)->update([
             'order_id'=>$index,
         ]);
-        Order::where('order_id', $order_id)->where('has_cancel', 1)
-        ->update(
-            [
-                'order_id'=>$index,
-                'has_cancel'=>0,
-            ]);
+        if($responsible_person!=Auth::user()->student_id){
+            Order::where('stu_id', Auth::user()->student_id)->where('has_cancel', 1)
+            ->update(
+                [
+                    'order_id'=>$index,
+                    'has_cancel'=>0,
+                ]);
+        }
+        else{
+            Order::where('order_id', $order_id)->where('has_cancel', 1)
+            ->update(
+                [
+                    'order_id'=>$index,
+                    'has_cancel'=>0,
+                ]);
+        }
+        if($agent_order->with('have_orders')->first()->have_orders->isEmpty() && $agent_order->with('this_cancels')->first()->this_cancels->isEmpty()){
+            StudentHaveOrders::where('order_id', $order_id)->delete();
+        }
         return redirect()->back()->with('success', '恢復訂單成功');
     }
     public function save(){

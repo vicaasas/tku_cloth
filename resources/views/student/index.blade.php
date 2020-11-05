@@ -7,8 +7,10 @@
 <table class="table table-sm table-striped table-hover table-condensed">
 <thead>
     <tr>
-    @if($self_order['responsible_person'] != $user->student_id)
-        <th class="text-center align-middle">代訂的人</th>
+    @if($self_order != null)
+        @if($self_order['responsible_person'] != $user->student_id)
+            <th class="text-center align-middle">代訂的人</th>
+        @endif
     @endif
     <th class="text-center align-middle">訂單編號</th>
     <th class="text-center align-middle">班級</th>
@@ -22,7 +24,7 @@
 </thead>
 
 <tbody>
-    @if($self_order != null)
+    @if($self_order != null&&$self_order['responsible_person'] != $user->student_id)
         @if($self_order->has_cancel==1)
         <tr>
             <th class="text-center align-middle">您的訂單已被取消</th>
@@ -36,9 +38,9 @@
         <tr>
         @endif
         <tr>
-            @if($self_order['responsible_person'] != $user->student_id)
-                <th class="text-center align-middle">{{ $self_order['responsible_person'] }}</th>
-            @endif
+            
+            <th class="text-center align-middle">{{ $self_order['responsible_person'] }}</th>
+            
             <th class="text-center align-middle">{{ $self_order['order_id'] }}</th>
             <th style="text-center align-middle">{{ $self_order['class_name'] }}</th>
             <th style="text-center align-middle">{{ $self_order['student_id'] }}</th>

@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\CheckExpire',
     ];
 
     /**
@@ -27,6 +27,8 @@ class Kernel extends ConsoleKernel
         //$schedule->command('back:clean')->daily()->at('01:00');
         //$schedule->command('back:run')->daily()->at('02:00');
         // $schedule->command('inspire')->hourly();
+        $schedule->command('command:checkexpire')->daily()->at('01:00');
+
     }
 
     /**
