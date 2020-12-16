@@ -27,7 +27,7 @@ class ReturnClothController extends Controller
         ]);
         $return_table=$table->render();
 
-        return view('admin.return',[
+        return view('admin.function_page.return',[
             'return_table'=> $return_table,
         ]);
     }
