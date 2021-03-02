@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('sub_system.layouts.base')
 @section('title', '總表清單')
 @section('content')
 <select onchange="change_degree(this)">
