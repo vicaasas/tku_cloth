@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('sub_system.layouts.base')
 @section('title', '學生清單')
 @section('content')
     <div class="container">
